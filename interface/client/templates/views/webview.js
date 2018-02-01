@@ -86,7 +86,7 @@ Template['views_webview'].onRendered(function () {
 
 
     // MIST API for installed tabs/dapps
-    webview.addEventListener('ipc-message', mistAPIBackend.bind({
+    webview.addEventListener('ipc-message', dhiAPIBackend.bind({
         template: template,
         webview: webview
     }));

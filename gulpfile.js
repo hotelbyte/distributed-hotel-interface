@@ -36,7 +36,7 @@ const options = minimist(args, {
 
 
 // echo version info and usage hints
-console.log('Mist version:', require('./package.json').version);
+console.log('DHI version:', require('./package.json').version);
 console.log('Electron version:', require('electron/package.json').version);
 
 if (_.isEmpty(_.intersection(args, ['--wallet']))) {
@@ -51,7 +51,7 @@ if (_.isEmpty(_.intersection(args, platformFlags))) {
 
 
 // prepare global variables (shared with other gulp task files)
-options.type = (options.wallet) ? 'wallet' : 'mist';
+options.type = (options.wallet) ? 'wallet' : 'dhi';
 options.platforms = platforms;
 options.activePlatforms = _.keys(_.pick(_.pick(options, platforms), (key) => { return key; }));
 

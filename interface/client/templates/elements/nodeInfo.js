@@ -73,9 +73,6 @@ Template['elements_nodeInfo'].onCreated(function(){
                 console.log('Restart app operation again');
 
                 TemplateVar.set(template, 'syncing', false);
-
-                // re-gain app operation
-                mistInit();
             }
         }
     });
@@ -143,7 +140,7 @@ Template['elements_nodeInfo'].helpers({
             return timeSince.fromNow(true);
         } else if (diff < 2) {
             Helpers.rerun['1s'].tick();
-            return ' <span class="blue">' + TAPi18n.__('mist.nodeInfo.blockReceivedShort') + '</span>';
+            return ' <span class="blue">' + TAPi18n.__('dhi.nodeInfo.blockReceivedShort') + '</span>';
         }
 
         Helpers.rerun['1s'].tick();

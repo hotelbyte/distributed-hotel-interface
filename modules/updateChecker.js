@@ -16,15 +16,15 @@ const check = exports.check = () => {
     let str = null;
 
     switch (Settings.uiMode) {  // eslint-disable-line default-case
-    case 'mist':
-        str = 'mist';
+    case 'dhi':
+        str = 'dhi';
         break;
     case 'wallet':
         str = 'wallet';
         break;
     }
 
-    return got('https://api.github.com/repos/ethereum/mist/releases', {
+    return got('https://api.github.com/repos/hotelbyte/distributed-hotel-interface/releases', {
         timeout: 3000,
         json: true,
     })
@@ -65,16 +65,7 @@ const check = exports.check = () => {
 function showWindow(options) {
     log.debug('Show update checker window');
 
-    return Windows.createPopup('updateAvailable', _.extend({
-        useWeb3: false,
-        electronOptions: {
-            width: 580,
-            height: 250,
-            alwaysOnTop: true,
-            resizable: false,
-            maximizable: false,
-        },
-    }, options));
+    return Windows.createPopup('updateAvailable', options);
 }
 
 
@@ -87,6 +78,7 @@ exports.run = () => {
                 },
             });
         }
+        store.dispatch({ type: '[MAIN]:UPDATE_CHECKER:FINISHED' });
     }).catch((err) => {
         log.error(err);
     });

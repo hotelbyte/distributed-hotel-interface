@@ -6,9 +6,10 @@ interface/public/i18n/
 interface/.meteor/dev_bundle
 interface/.meteor/public/
 dist_wallet/
-dist_mist/
-nodes/geth/
+dist_dhi/
+nodes/ghbc/
 config.json
-mist.log
+dhi.log
 npm-debug.log
 /yarn.lock
+.idea/

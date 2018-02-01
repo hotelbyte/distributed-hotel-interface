@@ -1,27 +1,37 @@
 {
-  "name": "Mist-Interface",
+  "name": "DHI",
   "version": "0.1.0",
-  "description": "Mist interface application",
+  "description": "Distributed hotel interface application",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ethereum/mist.git"
+    "url": "git+https://github.com/hotelbyte/distributed-hotel-interface.git"
   },
   "keywords": [
+    "hotelbyte",
+    "DHI",
+    "distributed-hotel-interface",
     "ethereum",
-    "mist",
+    "dhi",
     "web3"
   ],
   "author": "Fabian Vogelsteller <fabian@ethereum.org>",
+  "contributors": [
+    {
+      "name": "Alex Gómez",
+      "email": "lexfaraday@hotelbyte.org"
+    }
+  ],
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/ethereum/mist/issues"
+    "url": "https://github.com/hotelbyte/distributed-hotel-interface/issues"
   },
-  "homepage": "https://github.com/ethereum/mist#readme",
+  "homepage": "https://github.com/hotelbyte/distributed-hotel-interface#readme",
   "dependencies": {
+    "@babel/runtime": "^7.0.0-beta.38",
     "babel-runtime": "^6.18.0"
   }
 }

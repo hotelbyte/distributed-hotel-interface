@@ -1,41 +1,45 @@
 const _ = require('./underscore');
-const log4js = require('log4js');
-
+import log4js from 'log4js';
 
 /**
  * Setup logging system.
  * @param  {Object} [options]
- * @param  {String} [options.loglevel] Minimum logging threshold (default: info).
- * @param  {String} [options.logfile] File to write logs to (default: no file logging).
+ * @param  {String} [options.logLevel] Minimum logging threshold (default: info).
+ * @param  {String} [options.logFolder] Log folder to write logs to.
  */
 exports.setup = function (options) {
-    options = _.extend({
-        logfile: null,
-        loglevel: null,
-    }, options);
+    const logFolder = options.logFolder
+    const level = options.logLevel || 'info';
 
-    // logging
-    const log4jsOptions = {
-        appenders: [
-            {
-                type: 'console',
+    const config = {
+        appenders: {
+            out: { type: 'console' },
+            all: {
+                type: 'file',
+                filename: `${logFolder}/all.log`,
             },
-        ],
-        levels: {
-            '[all]': (options.loglevel || 'info').toUpperCase(),
+            main: {
+                type: 'file',
+                filename: `${logFolder}/category/main.log`,
+
+            },
+            HotelbyteNode: {
+                type: 'file',
+                filename: `${logFolder}/category/hotelbyte_node.log`
+            },
+            swarm: {
+                type: 'file',
+                filename: `${logFolder}/category/swarm.log`
+            }
         },
+        categories: {
+            default: { appenders: [ 'out', 'all', 'main' ], level },
+            HotelbyteNode: { appenders: [ 'out', 'all', 'HotelbyteNode' ], level },
+            swarm: { appenders: [ 'out', 'all', 'swarm' ], level }
+        }
     };
 
-    if (options.logfile) {
-        log4jsOptions.appenders.push(
-            {
-                type: 'file',
-                filename: options.logfile,
-            }
-        );
-    }
-
-    log4js.configure(log4jsOptions);
+    log4js.configure(config);
 };
 
 

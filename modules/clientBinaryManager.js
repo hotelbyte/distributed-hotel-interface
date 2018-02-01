@@ -11,12 +11,11 @@ const EventEmitter = require('events').EventEmitter;
 
 const log = require('./utils/logger').create('ClientBinaryManager');
 
-
-// should be       'https://raw.githubusercontent.com/ethereum/mist/master/clientBinaries.json'
-const BINARY_URL = 'https://raw.githubusercontent.com/ethereum/mist/master/clientBinaries.json';
+//should be         https://hotelbyte-store.s3.amazonaws.com/clientBinaries.json
+const BINARY_URL = 'https://hotelbyte-store.s3.amazonaws.com/clientBinaries.json';
 
 const ALLOWED_DOWNLOAD_URLS_REGEX =
-    /^https:\/\/(?:(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)?ethereum\.org\/|gethstore\.blob\.core\.windows\.net\/|bintray\.com\/artifact\/download\/karalabe\/ethereum\/)(?:.+)/;  // eslint-disable-line max-len
+    /^https:\/\/(?:(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)?hotelbyte\.org\/|hotelbyte-store\.s3\.amazonaws\.com\/)(?:.+)/;  // eslint-disable-line max-len
 
 class Manager extends EventEmitter {
     constructor() {
@@ -48,7 +47,7 @@ class Manager extends EventEmitter {
     }
 
     _checkForNewConfig(restart) {
-        const nodeType = 'Geth';
+        const nodeType = 'Ghbc';
         let binariesDownloaded = false;
         let nodeInfo;
 
@@ -128,16 +127,7 @@ class Manager extends EventEmitter {
 
                     log.debug('New client binaries config found, asking user if they wish to update...');
 
-                    const wnd = Windows.createPopup('clientUpdateAvailable', _.extend({
-                        useWeb3: false,
-                        electronOptions: {
-                            width: 600,
-                            height: 340,
-                            alwaysOnTop: false,
-                            resizable: false,
-                            maximizable: false,
-                        },
-                    }, {
+                    const wnd = Windows.createPopup('clientUpdateAvailable', {
                         sendData: {
                             uiAction_sendData: {
                                 name: nodeType,
@@ -147,7 +137,7 @@ class Manager extends EventEmitter {
                                 restart,
                             },
                         },
-                    }), (update) => {
+                    }, (update) => {
                         // update
                         if (update === 'update') {
                             this._writeLocalConfig(latestConfig);
@@ -192,7 +182,7 @@ class Manager extends EventEmitter {
 
             return mgr.init({
                 folders: [
-                    path.join(Settings.userDataPath, 'binaries', 'Geth', 'unpacked'),
+                    path.join(Settings.userDataPath, 'binaries', 'Ghbc', 'unpacked'),
                     path.join(Settings.userDataPath, 'binaries', 'Eth', 'unpacked'),
                 ],
             })
@@ -255,8 +245,8 @@ class Manager extends EventEmitter {
                 dialog.showMessageBox({
                     type: 'warning',
                     buttons: ['OK'],
-                    message: global.i18n.t('mist.errors.nodeChecksumMismatch.title'),
-                    detail: global.i18n.t('mist.errors.nodeChecksumMismatch.description', {
+                    message: global.i18n.t('dhi.errors.nodeChecksumMismatch.title'),
+                    detail: global.i18n.t('dhi.errors.nodeChecksumMismatch.description', {
                         type: nodeInfo.type,
                         version: nodeInfo.version,
                         algorithm: nodeInfo.algorithm,
@@ -298,7 +288,7 @@ class Manager extends EventEmitter {
             __dirname,
             '..',
             'nodes',
-            'eth',
+            'amazonaws',
             `${platform}-${process.arch}`
         );
 

@@ -59,7 +59,7 @@ Template['layout_sidebar'].helpers({
     @method (name)
     */
     'name': function () {
-        return (this._id === 'browser') ? TAPi18n.__('mist.sidebar.buttons.browser') : this.name;
+        return (this._id === 'browser') ? TAPi18n.__('dhi.sidebar.buttons.browser') : this.name;
     },
     /**
     Return the correct dapp icon
@@ -154,7 +154,7 @@ Template['layout_sidebar'].events({
 
         // dapp tab
         } else if (webview) {
-            webview.send('mistAPI_callMenuFunction', this.id);
+            webview.send('dhiAPI_callMenuFunction', this.id);
             LocalStore.set('selectedTab', tabId);
         }
     },
@@ -182,7 +182,7 @@ Template['layout_sidebar'].events({
         LocalStore.set('selectedTab', this._id);
         var initialTabId = this._id;
 
-        mist.requestAccount(function (ev, addresses) {
+        dhi.requestAccount(function (ev, addresses) {
             dbSync.syncDataFromBackend(LastVisitedPages);
             dbSync.syncDataFromBackend(Tabs).then(function () {
                 var tabCount = Tabs.find().fetch().length;

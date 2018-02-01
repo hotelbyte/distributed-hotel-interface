@@ -35,7 +35,7 @@ rules:
 
 globals:  # don't warn about missing declarations
   i18n: true
-  mist: true
+  dhi: true
   beforeEach: true
   LocalStore: true
   web3: true

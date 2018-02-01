@@ -9,7 +9,7 @@ const _ = global._;
 const Q = require('bluebird');
 const EventEmitter = require('events').EventEmitter;
 const { ipcMain: ipc } = require('electron');
-const ethereumNode = require('./ethereumNode');
+const hotelbyteNode = require('./hotelbyteNode');
 const log = require('./utils/logger').create('NodeSync');
 
 
@@ -20,7 +20,7 @@ class NodeSync extends EventEmitter {
     constructor() {
         super();
 
-        ethereumNode.on('state', _.bind(this._onNodeStateChanged, this));
+        hotelbyteNode.on('state', _.bind(this._onNodeStateChanged, this));
     }
 
     /**
@@ -34,7 +34,7 @@ class NodeSync extends EventEmitter {
         }
 
         this._syncPromise = Q.try(() => {
-            if (!ethereumNode.isIpcConnected) {
+            if (!hotelbyteNode.isIpcConnected) {
                 throw new Error('Cannot sync - Ethereum node not yet connected');
             }
 
@@ -117,7 +117,7 @@ class NodeSync extends EventEmitter {
 
             log.trace('Check sync status');
 
-            ethereumNode.send('eth_syncing', [])
+            hotelbyteNode.send('eth_syncing', [])
                 .then((ret) => {
                     const result = ret.result;
 
@@ -142,7 +142,7 @@ class NodeSync extends EventEmitter {
                     } else {  // got no result, let's check the block number
                         log.debug('Check latest block number');
 
-                        return ethereumNode.send('eth_getBlockByNumber', ['latest', false])
+                        return hotelbyteNode.send('eth_getBlockByNumber', ['latest', false])
                             .then((ret2) => {
                                 const blockResult = ret2.result;
                                 const now = Math.floor(new Date().getTime() / 1000);
@@ -182,14 +182,14 @@ class NodeSync extends EventEmitter {
     _onNodeStateChanged(state) {
         switch (state) {  // eslint-disable-line default-case
             // stop syncing when node about to be stopped
-        case ethereumNode.STATES.STOPPING:
-            log.info('Ethereum node stopping, so stop sync');
+        case hotelbyteNode.STATES.STOPPING:
+            log.info('Hotelbyte node stopping, so stop sync');
 
             this.stop();
             break;
             // auto-sync whenever node gets connected
-        case ethereumNode.STATES.CONNECTED:
-            log.info('Ethereum node connected, re-start sync');
+        case hotelbyteNode.STATES.CONNECTED:
+            log.info('Hotelbyte node connected, re-start sync');
 
                 // stop syncing, then start again
             this.stop().then(() => {

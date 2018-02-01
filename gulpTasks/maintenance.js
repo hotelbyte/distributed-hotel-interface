@@ -13,64 +13,63 @@ const clientBinaries = require('../clientBinaries.json');
 
 
 gulp.task('update-nodes', (cb) => {
-    const clientBinariesGeth = clientBinaries.clients.Geth;
-    const localGethVersion = clientBinariesGeth.version;
+    const clientBinariesGhbc = clientBinaries.clients.Ghbc;
+    const localGhbcVersion = clientBinariesGhbc.version;
     const newJson = clientBinaries;
-    const geth = newJson.clients.Geth;
+    const ghbc = newJson.clients.Ghbc;
 
-    // Query latest geth version
-    got('https://api.github.com/repos/ethereum/go-ethereum/releases/latest', { json: true })
+    // Query latest ghbc version
+    got('https://api.github.com/repos/hotelbyte/go-hotelbyte/releases/latest', { json: true })
     .then((response) => {
         return response.body.tag_name;
     })
     // Return tag name (e.g. 'v1.5.0')
     .then((tagName) => {
-        const latestGethVersion = tagName.match(/\d+\.\d+\.\d+/)[0];
+        const latestGhbcVersion = tagName.match(/\d+\.\d+\.\d+/)[0];
 
-        // Compare to current geth version in clientBinaries.json
-        if (cmp(latestGethVersion, localGethVersion)) {
-            geth.version = latestGethVersion;
+        // Compare to current ghbc version in clientBinaries.json
+        if (cmp(latestGhbcVersion, localGhbcVersion)) {
+            ghbc.version = latestGhbcVersion;
 
             // Query commit hash (first 8 characters)
-            got(`https://api.github.com/repos/ethereum/go-ethereum/commits/${tagName}`, { json: true })
+            got(`https://api.github.com/repos/hotelbyte/go-hotelbyte/commits/${tagName}`, { json: true })
             .then((response) => {
                 return String(response.body.sha).substr(0, 8);
             })
             .then((hash) => {
-                let blobs; // azure blobs
+                let blobs; // aws blobs
 
-                // Query Azure assets for md5 hashes
-                got('https://gethstore.blob.core.windows.net/builds?restype=container&comp=list', { xml: true })
+                // Query AWS assets for md5 hashes
+                got('https://hotelbyte-store.s3.amazonaws.com', { xml: true })
                 .then((response) => {
                     parseJson(response.body, (err, data) => {  // eslint-disable-line
                         if (err) return cb(err);
 
-                        blobs = data.EnumerationResults.Blobs[0].Blob;
+                        blobs = data.ListBucketResult.Contents;
                     });
 
                     // For each platform/arch in clientBinaries.json
-                    _.keys(geth.platforms).forEach((platform) => {
-                        _.keys(geth.platforms[platform]).forEach((arch) => {
+                    _.keys(ghbc.platforms).forEach((platform) => {
+                        _.keys(ghbc.platforms[platform]).forEach((arch) => {
                             // Update URL
-                            let url = geth.platforms[platform][arch].download.url;
-                            url = url.replace(/\d+\.\d+\.\d+-[a-z0-9]{8}/, `${latestGethVersion}-${hash}`);
-                            geth.platforms[platform][arch].download.url = url;
+                            let url = ghbc.platforms[platform][arch].download.url;
+                            url = url.replace(/\d+\.\d+\.\d+-[a-z0-9]{8}/, `${latestGhbcVersion}-${hash}`);
+                            ghbc.platforms[platform][arch].download.url = url;
 
                             // Update bin name (path in archive)
-                            let bin = geth.platforms[platform][arch].download.bin;
-                            bin = bin.replace(/\d+\.\d+\.\d+-[a-z0-9]{8}/, `${latestGethVersion}-${hash}`);
-                            geth.platforms[platform][arch].download.bin = bin;
+                            let bin = ghbc.platforms[platform][arch].download.bin;
+                            bin = bin.replace(/\d+\.\d+\.\d+-[a-z0-9]{8}/, `${latestGhbcVersion}-${hash}`);
+                            ghbc.platforms[platform][arch].download.bin = bin;
 
                             // Update expected sanity-command version output
-                            geth.platforms[platform][arch].commands.sanity.output[1] =
-                            String(latestGethVersion);
+                            ghbc.platforms[platform][arch].commands.sanity.output[1] =
+                            String(latestGhbcVersion);
 
                             // Update md5 checksum
                             blobs.forEach((blob) => {
-                                if (String(blob.Name) === _.last(geth.platforms[platform][arch].download.url.split('/'))) {
-                                    const sum = new Buffer(blob.Properties[0]['Content-MD5'][0], 'base64');
-
-                                    geth.platforms[platform][arch].download.md5 = sum.toString('hex');
+                                if (String(blob.Key) === _.last(ghbc.platforms[platform][arch].download.url.split('/'))) {
+                                    const sum = new Buffer(blob.ETag, 'base64');
+                                    ghbc.platforms[platform][arch].download.md5 = sum.toString('hex');
                                 }
                             });
                         });
@@ -114,16 +113,16 @@ gulp.task('download-signatures', (cb) => {
 
 gulp.task('update-i18n', (cb) => {
     /**
-     * This script will update Mist's i18n files
+     * This script will update DHI's i18n files
      *  - adds missing english strings to all translations
      *  - removes obsolet keys from translations
      */
 
-    const mistEN = require('../interface/i18n/mist.en.i18n.json');  // eslint-disable-line no-unused-vars
+    const dhiEN = require('../interface/i18n/dhi.en.i18n.json');  // eslint-disable-line no-unused-vars
     const appEN = require('../interface/i18n/app.en.i18n.json');  // eslint-disable-line no-unused-vars
 
     try {
-        ['mist', 'app'].forEach((mode) => {
+        ['dhi', 'app'].forEach((mode) => {
             const en = {
                 parent: 'en',
                 content: eval(`${mode}EN`)  // eslint-disable-line no-eval
@@ -154,7 +153,7 @@ gulp.task('update-i18n', (cb) => {
                     error = compare([en, lang]);
                     if (error) {
                         error.forEach((diff) => {
-                            if (diff.typeOfComparedParent !== diff.typeOfParent && diff.parent !== 'en.mist.applicationMenu.view.languages' && diff.parent !== 'en.mist.applicationMenu.view.langCodes') {
+                            if (diff.typeOfComparedParent !== diff.typeOfParent && diff.parent !== 'en.dhi.applicationMenu.view.languages' && diff.parent !== 'en.dhi.applicationMenu.view.langCodes') {
                                 eval(`lang.content.${diff.comparedParent.slice(diff.comparedParent.indexOf('.') + 1)} = en.content.${diff.parent.slice(diff.parent.indexOf('.') + 1)}`);  // eslint-disable-line no-eval
                             }
                         });

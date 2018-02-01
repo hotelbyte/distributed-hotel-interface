@@ -6,7 +6,7 @@ const fs = require('fs');
 const Web3 = require('web3');
 const shell = require('shelljs');
 const path = require('path');
-const gethPrivate = require('geth-private');
+const ghbcPrivate = require('geth-private');
 const Application = require('spectron').Application;
 const chai = require('chai');
 const http = require('http');
@@ -21,8 +21,8 @@ process.env.TEST_MODE = 'true';
 
 const log = logger.create('base');
 
-const startGeth = function* () {
-    let gethPath;
+const startGhbc = function* () {
+    let ghbcPath;
 
     const config = JSON.parse(
         fs.readFileSync(path.join('clientBinaries.json')).toString()
@@ -30,16 +30,16 @@ const startGeth = function* () {
     const manager = new ClientBinaryManager(config);
     yield manager.init();
 
-    if (!manager.clients.Geth.state.available) {
-        gethPath = manager.clients.Geth.activeCli.fullPath;
-        console.info('Downloading geth...');
-        const downloadedGeth = yield manager.download('Geth');
-        gethPath = downloadedGeth.client.activeCli.fullPath;
-        console.info('Geth downloaded at:', gethPath);
+    if (!manager.clients.Ghbc.state.available) {
+        ghbcPath = manager.clients.Ghbc.activeCli.fullPath;
+        console.info('Downloading ghbc...');
+        const downloadedGhbc = yield manager.download('Ghbc');
+        ghbcPath = downloadedGhbc.client.activeCli.fullPath;
+        console.info('Ghbc downloaded at:', ghbcPath);
     }
 
-    const geth = gethPrivate({
-        gethPath,
+    const ghbc = ghbcPrivate({
+        ghbcPath,
         balance: 5,
         genesisBlock: {
             config: {
@@ -48,20 +48,21 @@ const startGeth = function* () {
             difficulty: '0x01',
             extraData: '0x01',
         },
-        gethOptions: {
+        ghbcOptions: {
             port: 58546,
             rpcport: 58545,
         },
     });
 
-    log.info('Geth starting...');
-    yield geth.start();
-    log.info('Geth started');
+    log.info('Ghbc starting...');
+    yield ghbc.start();
+    log.info('Ghbc started');
 
-    return geth;
+    return ghbc;
 };
 
 const startFixtureServer = function (serverPort) {
+    log.info('Starting fixture server...');
     const app = express();
     app.use(express.static(path.join(__dirname, 'fixtures')));
 
@@ -70,6 +71,7 @@ const startFixtureServer = function (serverPort) {
         res.redirect(302, req.query.to);
     });
     app.listen(serverPort);
+    log.info('Fixture server started');
     return app;
 };
 
@@ -77,7 +79,7 @@ exports.mocha = (_module, options) => {
     const tests = {};
 
     options = _.extend({
-        app: 'mist',
+        app: 'dhi',
     }, options);
 
     _module.exports[options.name || path.basename(_module.filename)] = {
@@ -87,22 +89,23 @@ exports.mocha = (_module, options) => {
             this.assert = chai.assert;
             this.expect = chai.expect;
 
-            const mistLogFile = path.join(__dirname, 'mist.log');
+            const dhiLogFile = path.join(__dirname, 'dhi.log');
             const chromeLogFile = path.join(__dirname, 'chrome.log');
             const webdriverLogDir = path.join(__dirname, 'webdriver');
 
-            _.each([mistLogFile, webdriverLogDir, chromeLogFile], (e) => {
+            _.each([dhiLogFile, webdriverLogDir, chromeLogFile], (e) => {
                 log.info('Removing log files', e);
                 shell.rm('-rf', e);
             });
 
-            this.geth = yield startGeth();
+            this.ghbc = yield startGhbc();
 
-            const appFileName = (options.app === 'wallet') ? 'Ethereum Wallet' : 'Mist';
+            const appFileName = (options.app === 'wallet') ? 'Ethereum Wallet' : 'DHI';
             const platformArch = `${process.platform}-${process.arch}`;
+            log.info(`${appFileName} :: ${platformArch}`);
 
             let appPath;
-            const ipcProviderPath = path.join(this.geth.dataDir, 'geth.ipc');
+            const ipcProviderPath = path.join(this.ghbc.dataDir, 'ghbc.ipc');
 
             switch (platformArch) {
             case 'darwin-x64':
@@ -116,6 +119,7 @@ exports.mocha = (_module, options) => {
             default:
                 throw new Error(`Cannot run tests on ${platformArch}, please run on: darwin-x64, linux-x64`);
             }
+            log.info(`appPath: ${appPath}`);
 
             // check that appPath exists
             if (!shell.test('-f', appPath)) {
@@ -131,15 +135,17 @@ exports.mocha = (_module, options) => {
                 path: appPath,
                 args: [
                     '--loglevel', 'debug',
-                    '--logfile', mistLogFile,
-                    '--node-datadir', this.geth.dataDir,
+                    '--logfile', dhiLogFile,
+                    '--node-datadir', this.ghbc.dataDir,
                     '--rpc', ipcProviderPath,
                 ],
                 webdriverLogPath: webdriverLogDir,
                 chromeDriverLogPath: chromeLogFile,
             });
 
+            log.info('Starting app...');
             yield this.app.start();
+            log.info('App started');
 
             this.client = this.app.client;
 
@@ -166,7 +172,8 @@ exports.mocha = (_module, options) => {
 
             // Loop over windows trying to select Main Window
             const app = this;
-            const selectMainWindow = function* (mainWindowSearch) {
+            const selectMainWindow = function* (mainWindowSearch, retries = 20) {
+                console.log(`selectMainWindow retries remaining: ${retries}`);
                 let windowHandles = (yield app.client.windowHandles()).value;
 
                 for (let handle in windowHandles) {
@@ -176,13 +183,16 @@ exports.mocha = (_module, options) => {
                     if (isMainWindow) return true;
                 }
 
-                // not main window. try again after 1 second.
-                yield Q.delay(1000);
-                yield selectMainWindow(mainWindowSearch);
+                if (retries === 0) throw new Error('Failed to select main window');
+
+                // not main window. try again after 2 seconds.
+                yield Q.delay(2000);
+                yield selectMainWindow(mainWindowSearch, --retries);
             };
 
             const mainWindowSearch = (options.app === 'wallet') ? /^file:\/\/\/$/ : /interface\/index\.html$/;
             yield selectMainWindow(mainWindowSearch);
+            console.log('Main window selected');
 
             this.mainWindowHandle = (yield this.client.windowHandle()).value;
         },
@@ -202,8 +212,8 @@ exports.mocha = (_module, options) => {
                     position: 0
                 });
                 Tabs.upsert({_id: 'wallet'}, {$set: {
-                    url: 'https://wallet.ethereum.org',
-                    redirect: 'https://wallet.ethereum.org',
+                    url: 'https://wallet.hotelbyte.org',
+                    redirect: 'https://wallet.hotelbyte.org',
                     position: 1,
                     permissions: { admin: true }
                 }});
@@ -221,9 +231,9 @@ exports.mocha = (_module, options) => {
                 yield this.app.stop();
             }
 
-            if (this.geth && this.geth.isRunning) {
-                console.log('Stopping geth...');
-                yield this.geth.stop();
+            if (this.ghbc && this.ghbc.isRunning) {
+                console.log('Stopping ghbc...');
+                yield this.ghbc.stop();
             }
 
             if (this.httpServer && this.httpServer.isListening) {
@@ -261,23 +271,22 @@ const Utils = {
 
         return elem.value;
     },
-    * openAndFocusNewWindow(fnPromise) {
-        const client = this.client;
-
-        const existingHandles = (yield client.windowHandles()).value;
-
+    * openAndFocusNewWindow(type, fnPromise) {
         yield fnPromise();
+        const handle = yield this.selectWindowHandleByType(type);
+        yield this.client.window(handle);
+    },
+    * selectWindowHandleByType(type) {
+        const client = this.client;
+        const windowHandles = (yield client.windowHandles()).value;
 
-        yield this.waitUntil('new window visible', function checkForAddWindow() {
-            return client.windowHandles().then((handles) => {
-                return handles.value.length === existingHandles.length + 1;
-            });
-        });
-
-        const newHandles = (yield client.windowHandles()).value;
-
-        // focus on new window
-        yield client.window(newHandles.pop());
+        for (let handle in windowHandles) {
+            yield client.window(windowHandles[handle]);
+            const windowUrl = yield client.getUrl();
+            if (new RegExp(type).test(windowUrl)) {
+                return windowHandles[handle];
+            }
+        }
     },
     * execElemsMethod(clientElementIdMethod, selector) {
         const elems = yield this.client.elements(selector);
@@ -304,7 +313,7 @@ const Utils = {
             throw new Error('Page capture failed');
         }
 
-        fs.writeFileSync(path.join(__dirname, 'mist.png'), pageImage);
+        fs.writeFileSync(path.join(__dirname, 'dhi.png'), pageImage);
     },
     * getRealAccountBalances() {
         let accounts = this.web3.eth.accounts;
@@ -352,10 +361,10 @@ const Utils = {
         yield Q.delay(1000);
     },
     * startMining() {
-        yield this.geth.consoleExec('miner.start();');
+        yield this.ghbc.consoleExec('miner.start();');
     },
     * stopMining() {
-        yield this.geth.consoleExec('miner.stop();');
+        yield this.ghbc.consoleExec('miner.stop();');
     },
 
     * selectTab(tabId) {
@@ -388,18 +397,23 @@ const Utils = {
 
     * pinCurrentTab() {
         const client = this.client;
-
-        yield this.openAndFocusNewWindow(() => {
+        yield this.openAndFocusNewWindow('connectAccount', () => {
             return client.click('span.connect-button');
         });
         yield client.click('.dapp-primary-button');
-
+        yield this.delay(500);
         yield client.window(this.mainWindowHandle); // selects main window again
-        yield Q.delay(500);
 
         const pinnedWebview = (yield client.windowHandles()).value.pop();
         return pinnedWebview;
     },
+
+    * delay(ms) {
+        yield this.waitUntil('delay', async () => {
+            return new Promise(resolve => setTimeout(() => resolve(true), ms));
+        });
+    },
+
     * navigateTo(url) {
         const client = this.client;
         yield client.setValue('#url-input', url);

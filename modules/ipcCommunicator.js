@@ -11,8 +11,10 @@ const Windows = require('./windows');
 const logger = require('./utils/logger');
 const appMenu = require('./menuItems');
 const Settings = require('./settings');
-const ethereumNode = require('./ethereumNode.js');
+const hotelbyteNode = require('./hotelbyteNode.js');
 const keyfileRecognizer = require('ethereum-keyfile-recognizer');
+
+import { getLanguage } from './core/settings/actions';
 
 const log = logger.create('ipcCommunicator');
 
@@ -75,33 +77,25 @@ ipc.on('backendAction_windowMessageToOwner', (e, error, value) => {
     const windowId = e.sender.id;
     const senderWindow = Windows.getById(windowId);
 
+    // If msg is from a generic window, use the "actingType" instead of type
+    const senderWindowType = senderWindow.actingType || senderWindow.type;
+
     if (senderWindow.ownerId) {
         const ownerWindow = Windows.getById(senderWindow.ownerId);
         const mainWindow = Windows.getByType('main');
 
         if (ownerWindow) {
-            ownerWindow.send('uiAction_windowMessage', senderWindow.type, error, value);
+            ownerWindow.send('uiAction_windowMessage', senderWindowType, error, value);
         }
 
         // send through the mainWindow to the webviews
         if (mainWindow) {
-            mainWindow.send('uiAction_windowMessage', senderWindow.type, senderWindow.ownerId, error, value);
+            mainWindow.send('uiAction_windowMessage', senderWindowType, senderWindow.ownerId, error, value);
         }
     }
 });
 
-ipc.on('backendAction_setLanguage', (e) => {
-    global.i18n.changeLanguage(Settings.language.substr(0, 5), (err) => {
-        if (!err) {
-            log.info('Backend language set to: ', global.i18n.language);
-            appMenu(global.webviews);
-        }
-    });
-});
-
-ipc.on('backendAction_getLanguage', (e) => {
-    e.returnValue = Settings.language;
-});
+ipc.on('backendAction_getLanguage', (e) => { store.dispatch(getLanguage(e)); });
 
 ipc.on('backendAction_stopWebviewNavigation', (e, id) => {
     console.log('webcontent ID', id);
@@ -137,21 +131,21 @@ ipc.on('backendAction_checkWalletFile', (e, path) => {
 
                 let keystorePath = Settings.userHomePath;
                 // eth
-                if (ethereumNode.isEth) {
+                if (hotelbyteNode.isEth) {
                     if (process.platform === 'win32') {
                         keystorePath = `${Settings.appDataPath}\\Web3\\keys`;
                     } else {
                         keystorePath += '/.web3/keys';
                     }
-                // geth
+                // ghbc
                 } else {
-                    if (process.platform === 'darwin') keystorePath += '/Library/Ethereum/keystore';
+                    if (process.platform === 'darwin') keystorePath += '/Library/Hotelbyte/keystore';
 
                     if (process.platform === 'freebsd' ||
                         process.platform === 'linux' ||
-                        process.platform === 'sunos') keystorePath += '/.ethereum/keystore';
+                        process.platform === 'sunos') keystorePath += '/.hotelbyte/keystore';
 
-                    if (process.platform === 'win32') keystorePath = `${Settings.appDataPath}\\Ethereum\\keystore`;
+                    if (process.platform === 'win32') keystorePath = `${Settings.appDataPath}\\Hotelbyte\\keystore`;
                 }
 
                 if (!/^[0-9a-fA-F]{40}$/.test(keyfile.address)) {
@@ -182,12 +176,12 @@ ipc.on('backendAction_importWalletFile', (e, path, pw) => {
     const ClientBinaryManager = require('./clientBinaryManager');  // eslint-disable-line global-require
     let error = false;
 
-    const binPath = ClientBinaryManager.getClient('geth').binPath;
+    const binPath = ClientBinaryManager.getClient('ghbc').binPath;
     const nodeProcess = spawn(binPath, ['wallet', 'import', path]);
 
     nodeProcess.once('error', () => {
         error = true;
-        e.sender.send('uiAction_importedWalletFile', 'Couldn\'t start the "geth wallet import <file.json>" process.');
+        e.sender.send('uiAction_importedWalletFile', 'Couldn\'t start the "ghbc wallet import <file.json>" process.');
     });
     nodeProcess.stdout.on('data', (_data) => {
         const data = _data.toString();
@@ -228,33 +222,17 @@ ipc.on('backendAction_importWalletFile', (e, path, pw) => {
 
 
 const createAccountPopup = (e) => {
-    Windows.createPopup('requestAccount', {
-        ownerId: e.sender.id,
-        electronOptions: {
-            width: 400,
-            height: 230,
-            alwaysOnTop: true,
-        },
-    });
+    Windows.createPopup('requestAccount', { ownerId: e.sender.id });
 };
 
 // MIST API
-ipc.on('mistAPI_createAccount', createAccountPopup);
+ipc.on('dhiAPI_createAccount', createAccountPopup);
 
-ipc.on('mistAPI_requestAccount', (e) => {
+ipc.on('dhiAPI_requestAccount', (e) => {
     if (global.mode === 'wallet') {
         createAccountPopup(e);
-    } else { // Mist
-        Windows.createPopup('connectAccount', {
-            ownerId: e.sender.id,
-            electronOptions: {
-                width: 460,
-                height: 520,
-                maximizable: false,
-                minimizable: false,
-                alwaysOnTop: true,
-            },
-        });
+    } else { // DHI
+        Windows.createPopup('connectAccount', { ownerId: e.sender.id });
     }
 });
 

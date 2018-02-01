@@ -1,19 +1,19 @@
 <template name="popupWindows_requestAccount">
     <div class="popup-windows request-account">
         <form action="#">
-            <h1>{{i18n "mist.popupWindows.requestAccount.title"}}</h1>
+            <h1>{{i18n "dhi.popupWindows.requestAccount.title"}}</h1>
             
             {{#if TemplateVar.get "creating"}}
-                <h2>{{i18n "mist.popupWindows.requestAccount.creating"}}</h2>
+                <h2>{{i18n "dhi.popupWindows.requestAccount.creating"}}</h2>
             {{else}}
                 <div class="field-container {{#if TemplateVar.get 'password-repeat'}}repeat-field{{/if}}">
                     
-                    <input type="{{passwordInputType}}" placeholder="{{i18n 'mist.popupWindows.requestAccount.enterPassword'}}" class="password">
-                    <input type="{{passwordInputType}}" placeholder="{{i18n 'mist.popupWindows.requestAccount.repeatPassword'}}" class='password-repeat'>
+                    <input type="{{passwordInputType}}" placeholder="{{i18n 'dhi.popupWindows.requestAccount.enterPassword'}}" class="password">
+                    <input type="{{passwordInputType}}" placeholder="{{i18n 'dhi.popupWindows.requestAccount.repeatPassword'}}" class='password-repeat'>
                 </div>
                 <div class="show-password-container">
                     <input type="checkbox" name="elements_input_bool" class="show-password abi-input">
-                    <label for="show-password">{{i18n "mist.popupWindows.onboarding.buttons.showPassword"}}</label>
+                    <label for="show-password">{{i18n "dhi.popupWindows.onboarding.buttons.showPassword"}}</label>
                 </div>
                 <div class="dapp-modal-buttons">
                     <button class="cancel" type="button">{{i18n "buttons.cancel"}}</button>

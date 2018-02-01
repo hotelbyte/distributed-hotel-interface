@@ -32,7 +32,7 @@
                                         <div class="accounts">
                                             {{#if dappAccounts.count}}
                                                 <button class="display">
-                                                    <span>{{dappAccounts.count}} {{i18n 'mist.sidebar.submenu.account' count=dappAccounts.count}}</span>
+                                                    <span>{{dappAccounts.count}} {{i18n 'dhi.sidebar.submenu.account' count=dappAccounts.count}}</span>
                                                         <span class="dapp-identicon-container">
                                                         {{#each (dappAccounts 3)}}
                                                             {{> dapp_identicon identity=address class="dapp-tiny"}}
@@ -40,7 +40,7 @@
                                                     </span>
                                                 </button>
                                             {{else}}
-                                                <button class="connect">{{i18n 'mist.sidebar.submenu.connectAccounts'}}</button>
+                                                <button class="connect">{{i18n 'dhi.sidebar.submenu.connectAccounts'}}</button>
                                             {{/if}}
                                         </div>
                                     {{/if}}

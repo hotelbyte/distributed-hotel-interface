@@ -115,7 +115,7 @@ Template['layout_browserBar'].events({
     */
     'click .app-bar > button.accounts': function (e, template) {
         LocalStore.set('chosenTab', LocalStore.get('selectedTab')); // needed by connectAccount
-        mist.requestAccount(function (e, addresses) {
+        dhi.requestAccount(function (e, addresses) {
             var tabId = LocalStore.get('selectedTab');
 
             dbSync.syncDataFromBackend(LastVisitedPages);
@@ -157,7 +157,7 @@ Template['layout_browserBar'].events({
         var url = Helpers.sanitizeUrl(url);
         var tabId = Helpers.getTabIdByUrl(url);
 
-        console.log('Submitted new URL:' + url);
+        console.log('Submitted new URL: ' + url);
 
         // update current tab url
         Tabs.update(tabId, { $set: {

@@ -21,30 +21,31 @@
     -webkit-app-region: drag;
 
     &.wallet {
-        background-image: url('/images/bg-homestead.jpg');
+        background-image: url('/images/bg-hotelbyte.jpg');
 
         h1 {
             color: #fff;
         }
-        button.start-app {
-            color: #BCD3E6;
+        button.start-app,
+        button.retry-connection {
+            color: #bcd3e6;
             &:hover {
                 color: darken(#BCD3E6, 5%);
             }
         }
         button.close {
-            color: rgba(0,0,0, 0.3);
+            color: rgba(180, 220, 221, 0.3);
 
             &:hover {
-                color: rgba(0,0,0, 0.8);
+                color: rgba(180, 220, 221, 0.8);
             }
         }
     }
-    &.mist {
-        background-image: url('/images/bg-metropolis.jpg');
+    &.dhi {
+        background-image: url('/images/bg-hotelbyte.jpg');
 
         h1 {
-            color: #152f58;
+            color: #2edde9;
             text-shadow: 0 1px 5px rgba(255,255,255,0.75);
         }
 
@@ -52,8 +53,8 @@
             color: #FFF;
             opacity: 0.9;
             .unknown {
-                color: #152f58;
-                text-shadow: 0 1px 5px rgba(255,255,255,0.75);        
+                color: #b4dcdd;
+                text-shadow: 0 1px 5px rgba(255,255,255,0.75);
             }
         }
     }
@@ -88,7 +89,8 @@
         color: rgba(255,255,255, 0.8);
     }
     /* start app button */
-    button.start-app {
+    button.start-app,
+    button.retry-connection {
         bottom: 10px;
         right: 0;
         left: 0;
@@ -96,37 +98,38 @@
         margin: 0;
         padding: 0;
         text-align: center;
-        color: #4A90E2;
+        color: #2edde9;
         text-transform: uppercase;
         font-family: 'Source Sans Pro', 'Helvetica Neue', 'Helvetica', verdana, arial;
         font-size: 1em;
         font-weight: bold;
     }
-    button.start-app:hover {
-        color: #2A6ED0;
+    button.start-app:hover,
+    button.retry-connection:hover {
+        color: #b4dcdd;
     }
 
     img {
-        margin-top: 7px;
-        width: 110px;
+        margin-top: 30px;
+        width: 115px;
         transition: width 0.5s  ease-in-out;
     }
     &.small img {
         width: 80px;
     }
     img.shadow {
-        box-shadow: 0 0 15px rgba(0,0,0,0.4);
+        box-shadow: 0 0 15px rgba(46, 221, 233, 0.4);
         border-radius: 50%;
     }
     h1 {
-        margin-top: 10px;
+        margin-top: 30px;
         font-size: 18px;
         font-weight: 400;
         /*text-shadow: 0 1px 5px rgba(0,0,0,0.6);*/
         -webkit-user-select: none;
     }
     &.small h1 {
-        margin-top: 20px;
+        margin-top: 28px;
     }
     small {
         display: inline-block;
@@ -152,15 +155,15 @@
     }
 
     progress[value]::-webkit-progress-bar {
-        background-color: rgba(255,255,255, 0.2);
+        background-color: rgba(180, 220, 221, 0.2);
         border-radius: 2px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
+        box-shadow: 0 2px 5px rgba(54, 80, 173, 0.25) inset;
     }
 
     progress.wallet::-webkit-progress-value {
         background-image: -webkit-linear-gradient(left, #DCCAB6, #fff);
     }
-    progress.mist::-webkit-progress-value {
+    progress.dhi::-webkit-progress-value {
         background-image: -webkit-linear-gradient(left, #3185CC, #ADA1E2);
     }
     progress::-webkit-progress-value {

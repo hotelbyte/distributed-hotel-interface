@@ -1,10 +1,12 @@
-/**
-The init function of Mist
+const { getLanguage } = require('./actions.js');
 
-@method mistInit
+/**
+The init function of DHI
+
+@method dhiInit
 */
-mistInit = function () {
-    console.info('Initialise Mist Interface');
+dhiInit = function () {
+    console.info('Initialise DHI Interface');
 
     EthBlocks.init();
     const ethBlocksInterval = setInterval(() => {
@@ -27,8 +29,8 @@ mistInit = function () {
 
             Tabs.insert({
                 _id: 'browser',
-                url: 'https://ethereum.org',
-                redirect: 'https://ethereum.org',
+                url: 'http://hotelbyte.org',
+                redirect: 'http://hotelbyte.org',
                 position: 0
             });
         } else {
@@ -45,8 +47,8 @@ mistInit = function () {
             { _id: 'wallet' },
             {
                 $set: {
-                    url: 'https://wallet.ethereum.org',
-                    redirect: 'https://wallet.ethereum.org',
+                    url: 'https://wallet.hotelbyte.org',
+                    redirect: 'https://wallet.hotelbyte.org',
                     position: 1,
                     permissions: {
                         admin: true
@@ -54,6 +56,18 @@ mistInit = function () {
                 }
             });
 
+        Tabs.upsert(
+            { _id: 'explorer' },
+            {
+                $set: {
+                    url: 'https://explorer.hotelbyte.org',
+                    redirect: 'https://explorer.hotelbyte.org',
+                    position: 2,
+                    permissions: {
+                        admin: true
+                    }
+                }
+            });
         // Sets browser as default tab if:
         // 1) there's no record of selected tab
         // 2) data is corrupted (no saved tab matches localstore)
@@ -69,12 +83,10 @@ Meteor.startup(function () {
 
     if (!location.hash) {  // Main window
         EthAccounts.init();
-        mistInit();
+        dhiInit();
     }
 
-    console.debug('Setting language');
-
-    TAPi18n.setLanguage(ipc.sendSync('backendAction_getLanguage'));
+    store.dispatch(getLanguage());
 
     // change moment and numeral language, when language changes
     Tracker.autorun(function () {

@@ -46,12 +46,12 @@ Template['popupWindows_requestAccount'].events({
         // check passwords
          if ( pw !== pwRepeat) {
             GlobalNotification.warning({
-                content: TAPi18n.__('mist.popupWindows.requestAccount.errors.passwordMismatch'),
+                content: TAPi18n.__('dhi.popupWindows.requestAccount.errors.passwordMismatch'),
                 duration: 3
             });
         } else if (pw && pw.length < 8) {
             GlobalNotification.warning({
-                content: TAPi18n.__('mist.popupWindows.requestAccount.errors.passwordTooShort'),
+                content: TAPi18n.__('dhi.popupWindows.requestAccount.errors.passwordTooShort'),
                 duration: 3
             });
         } else if (pw && pw.length >= 8) {
@@ -67,7 +67,7 @@ Template['popupWindows_requestAccount'].events({
                 TemplateVar.set(template, 'creating', false);
 
                 // notifiy about backing up!
-                alert(TAPi18n.__('mist.popupWindows.requestAccount.backupHint'));
+                alert(TAPi18n.__('dhi.popupWindows.requestAccount.backupHint'));
 
                 ipc.send('backendAction_closePopupWindow');
             });

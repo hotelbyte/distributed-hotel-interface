@@ -2,7 +2,7 @@
     <div class="network-indicator">
         {{#if $eq (TemplateVar.get "network") "unknown"}}
             <div class="unknown indicator" title="Network not yet known"> 
-                {{i18n "mist.nodeInfo.checkingWhichNetwork"}} 
+                {{i18n "dhi.nodeInfo.checkingWhichNetwork"}} 
             </div>
         {{/if}}
 
@@ -14,7 +14,7 @@
 
         {{#if $eq (TemplateVar.get "network") "privatenet"}}
             <div class="devnet indicator" title="This is a developer network">
-                {{i18n "mist.nodeInfo.privateNetwork"}}                 
+                {{i18n "dhi.nodeInfo.privateNetwork"}}                 
             </div>
         {{/if}}
     </div>

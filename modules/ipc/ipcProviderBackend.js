@@ -15,7 +15,7 @@ const path = require('path');
 const log = require('../utils/logger').create('ipcProviderBackend');
 const Sockets = require('../socketManager');
 const Settings = require('../settings');
-const ethereumNode = require('../ethereumNode');
+const hotelbyteNode = require('../hotelbyteNode');
 
 
 const ERRORS = {
@@ -37,7 +37,7 @@ class IpcProviderBackend {
 
         this.ERRORS = ERRORS;
 
-        ethereumNode.on('state', _.bind(this._onNodeStateChanged, this));
+        hotelbyteNode.on('state', _.bind(this._onNodeStateChanged, this));
 
         ipc.on('ipcProvider-create', _.bind(this._getOrCreateConnection, this));
         ipc.on('ipcProvider-destroy', _.bind(this._destroyConnection, this));
@@ -60,6 +60,8 @@ class IpcProviderBackend {
         });
 
         log.trace('Loaded processors', _.keys(this._processors));
+
+        store.dispatch({ type: '[MAIN]:IPC_PROVIDER_BACKEND:INIT' });
     }
 
 
@@ -138,19 +140,19 @@ class IpcProviderBackend {
                         log.debug(`Connecting socket ${ownerId}`);
 
                         // wait for node to connect first.
-                        if (ethereumNode.state !== ethereumNode.STATES.CONNECTED) {
+                        if (hotelbyteNode.state !== hotelbyteNode.STATES.CONNECTED) {
                             return new Q((resolve, reject) => {
                                 const onStateChange = (newState) => {
-                                    if (ethereumNode.STATES.CONNECTED === newState) {
-                                        ethereumNode.removeListener('state', onStateChange);
+                                    if (hotelbyteNode.STATES.CONNECTED === newState) {
+                                        hotelbyteNode.removeListener('state', onStateChange);
 
-                                        log.debug(`Ethereum node connected, resume connecting socket ${ownerId}`);
+                                        log.debug(`Hotelbyte node connected, resume connecting socket ${ownerId}`);
 
                                         resolve();
                                     }
                                 };
 
-                                ethereumNode.on('state', onStateChange);
+                                hotelbyteNode.on('state', onStateChange);
                             });
                         }
                     })
@@ -208,7 +210,7 @@ class IpcProviderBackend {
     _onNodeStateChanged(state) {
         switch (state) {  // eslint-disable-line default-case
             // stop syncing when node about to be stopped
-        case ethereumNode.STATES.STOPPING:
+        case hotelbyteNode.STATES.STOPPING:
             log.info('Ethereum node stopping, disconnecting sockets');
 
             Q.all(_.map(this._connections, (item) => {

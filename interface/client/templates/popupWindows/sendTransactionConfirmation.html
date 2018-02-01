@@ -3,12 +3,12 @@
         <form action="#">
             {{#with $.Session.get "data"}}
                 {{#if $and data (TemplateVar.get "toIsContract")}}
-                    <h1>{{i18n "mist.popupWindows.sendTransactionConfirmation.title.contractExecution"}}</h1>
+                    <h1>{{i18n "dhi.popupWindows.sendTransactionConfirmation.title.contractExecution"}}</h1>
                 {{else}}
                     {{#if to}}
-                        <h1>{{i18n "mist.popupWindows.sendTransactionConfirmation.title.sendTransaction"}}</h1>
+                        <h1>{{i18n "dhi.popupWindows.sendTransactionConfirmation.title.sendTransaction"}}</h1>
                     {{else}}
-                        <h1>{{i18n "mist.popupWindows.sendTransactionConfirmation.title.createContract"}}</h1>
+                        <h1>{{i18n "dhi.popupWindows.sendTransactionConfirmation.title.createContract"}}</h1>
                     {{/if}}
                 {{/if}}
 
@@ -49,38 +49,38 @@
                         {{else}}
                             <i class="circle-icon icon-doc"></i>
                             <br>
-                            <span>{{i18n "mist.popupWindows.sendTransactionConfirmation.createContract"}}</span>
+                            <span>{{i18n "dhi.popupWindows.sendTransactionConfirmation.createContract"}}</span>
                         {{/if}}
                     </div>
                 </div>
 
                 {{#if transactionInvalid}}
                     <p class="info dapp-error"> 
-                    {{i18n "mist.popupWindows.sendTransactionConfirmation.estimatedGasError"}}
+                    {{i18n "dhi.popupWindows.sendTransactionConfirmation.estimatedGasError"}}
                     </p>
                 {{else}}
                     {{#unless $eq (TemplateVar.get "gasError") "notEnoughGas"}}
                         {{#if $eq (TemplateVar.get "gasError") "overBlockGasLimit"}}
                             <div class="info dapp-error">
-                                {{i18n "mist.popupWindows.sendTransactionConfirmation.overBlockGasLimit"}}
+                                {{i18n "dhi.popupWindows.sendTransactionConfirmation.overBlockGasLimit"}}
                             </div>
                         {{else}}
                             {{#if $and data (TemplateVar.get "toIsContract")}}
                                 <p class="info">
-                                {{i18n "mist.popupWindows.sendTransactionConfirmation.contractExecutionInfo"}}
+                                {{i18n "dhi.popupWindows.sendTransactionConfirmation.contractExecutionInfo"}}
                                 </p>
                             {{/if}}
 
                             {{#unless to}}
                                 <p class="info">
-                                {{i18n "mist.popupWindows.sendTransactionConfirmation.contractCreationInfo"}}
+                                {{i18n "dhi.popupWindows.sendTransactionConfirmation.contractCreationInfo"}}
                                 </p>
                             {{/unless}}
 
                         {{/if}}
                     {{else}}
                         <div class="info dapp-error not-enough-gas" style="cursor: pointer;">
-                            {{{i18n "mist.popupWindows.sendTransactionConfirmation.notEnoughGas"}}}
+                            {{{i18n "dhi.popupWindows.sendTransactionConfirmation.notEnoughGas"}}}
                         </div>
                     {{/unless}}
 
@@ -90,15 +90,15 @@
                     <ul>
                         <li>
                             <div class="value">
-                            {{i18n "mist.popupWindows.sendTransactionConfirmation.estimatedFee"}}
+                            {{i18n "dhi.popupWindows.sendTransactionConfirmation.estimatedFee"}}
                             </div>
                             <div class="type">
                                 {{#if $eq (TemplateVar.get "estimatedGas") "invalid"}}
-                                    <span class="red"><i class="icon-shield"></i> {{i18n "mist.popupWindows.sendTransactionConfirmation.transactionThrow"}}</span>
+                                    <span class="red"><i class="icon-shield"></i> {{i18n "dhi.popupWindows.sendTransactionConfirmation.transactionThrow"}}</span>
                                 {{else}}
 
                                     {{#if $eq (dapp_formatNumber (TemplateVar.get "estimatedGas") "0") "0"}}
-                                        <span class="red"><i class="icon-shield"></i> {{i18n "mist.popupWindows.sendTransactionConfirmation.noEstimate"}}</span>
+                                        <span class="red"><i class="icon-shield"></i> {{i18n "dhi.popupWindows.sendTransactionConfirmation.noEstimate"}}</span>
                                     {{else}}
                                         {{estimatedFee}} ({{dapp_formatNumber (TemplateVar.get "estimatedGas") "0,0"}} gas)
                                     {{/if}}
@@ -110,7 +110,7 @@
                         </li>
                         <li>
                             <div class="value">
-                                {{i18n "mist.popupWindows.sendTransactionConfirmation.gasLimit"}}
+                                {{i18n "dhi.popupWindows.sendTransactionConfirmation.gasLimit"}}
                             </div>
                             <div class="type">
                                 {{providedGas}} ether (<span class="provided-gas" contenteditable="true">{{dapp_formatNumber (TemplateVar.get 'initialProvidedGas') '0'}}</span> gas)
@@ -118,9 +118,9 @@
                         </li>
                         <li>
                             <div class="value">
-                                {{i18n "mist.popupWindows.sendTransactionConfirmation.gasPrice"}}
+                                {{i18n "dhi.popupWindows.sendTransactionConfirmation.gasPrice"}}
                             </div>
-                            <div class="type">{{dapp_formatBalance gasPrice "0,0.0[0000]" "szabo"}} {{i18n "mist.popupWindows.sendTransactionConfirmation.perMillionGas"}}</div>
+                            <div class="type">{{dapp_formatBalance gasPrice "0,0.0[0000]" "szabo"}} {{i18n "dhi.popupWindows.sendTransactionConfirmation.perMillionGas"}}</div>
                         </li>
                     </ul>
                 </div>
@@ -128,8 +128,8 @@
                 {{#if data}}
                     {{#if showFormattedParams}}
                         <div class="parameters">
-                            <h3>{{i18n "mist.popupWindows.sendTransactionConfirmation.parameters"}}
-                                <a href="#" class="toggle-panel">{{i18n "mist.popupWindows.sendTransactionConfirmation.showRawBytecode"}}</a>
+                            <h3>{{i18n "dhi.popupWindows.sendTransactionConfirmation.parameters"}}
+                                <a href="#" class="toggle-panel">{{i18n "dhi.popupWindows.sendTransactionConfirmation.showRawBytecode"}}</a>
                             </h3>
                             <ol>
                             {{# each param in params}}
@@ -139,14 +139,14 @@
                         </div>
                     {{else}}
                         <div class="data">
-                            <h3>{{i18n "mist.popupWindows.sendTransactionConfirmation.data"}}
+                            <h3>{{i18n "dhi.popupWindows.sendTransactionConfirmation.data"}}
 
                             {{# if params}}
-                                <a href="#" class="toggle-panel">{{i18n "mist.popupWindows.sendTransactionConfirmation.showDecodedParameters"}}</a>
+                                <a href="#" class="toggle-panel">{{i18n "dhi.popupWindows.sendTransactionConfirmation.showDecodedParameters"}}</a>
                             {{else}}
                                 {{#if to}}
                                     {{#unless (TemplateVar.get "lookingUpFunctionSignature")}}
-                                        <a class="lookup-function-signature simptip-position-bottom simptip-movable" data-tooltip="{{i18n 'mist.popupWindows.sendTransactionConfirmation.lookupDataExplainer'}}"> {{i18n "mist.popupWindows.sendTransactionConfirmation.lookupData"}}
+                                        <a class="lookup-function-signature simptip-position-bottom simptip-movable" data-tooltip="{{i18n 'dhi.popupWindows.sendTransactionConfirmation.lookupDataExplainer'}}"> {{i18n "dhi.popupWindows.sendTransactionConfirmation.lookupData"}}
                                         </a>
                                     {{/unless}}
                                 {{/if}}
@@ -162,14 +162,14 @@
                 </div>
                 <footer>
                 {{#if TemplateVar.get "unlocking"}}
-                    <h2>{{i18n "mist.popupWindows.sendTransactionConfirmation.unlocking"}}</h2>
+                    <h2>{{i18n "dhi.popupWindows.sendTransactionConfirmation.unlocking"}}</h2>
                 {{else}}
 
-                    <input type="password" placeholder="{{i18n 'mist.popupWindows.sendTransactionConfirmation.enterPassword'}}">
+                    <input type="password" placeholder="{{i18n 'dhi.popupWindows.sendTransactionConfirmation.enterPassword'}}">
 
                     <div class="dapp-modal-buttons">
                         <button class="cancel" type="button">{{i18n "buttons.cancel"}}</button>
-                        <button class="ok dapp-primary-button" type="submit">{{i18n "mist.popupWindows.sendTransactionConfirmation.buttons.sendTransaction"}}</button>
+                        <button class="ok dapp-primary-button" type="submit">{{i18n "dhi.popupWindows.sendTransactionConfirmation.buttons.sendTransaction"}}</button>
                     </div>
 
                 {{/if}}
