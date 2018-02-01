@@ -8,7 +8,7 @@
                         "download": {
                             "url": "https://hotelbyte-store.s3.amazonaws.com/ghbc-linux-amd64-1.7.2-1db4ecdc.tar.gz",
                             "type": "tar",
-                            "md5": "cc4a666fd21ae3627ee8ae974650b2f7",
+                            "md5": "77ec79a5f0ae00fcc88552a7936b6f51",
                             "bin": "ghbc-linux-amd64-1.7.2-1db4ecdc/ghbc"
                         },
                         "bin": "ghbc",
@@ -73,7 +73,7 @@
 
                             "url": "https://hotelbyte-store.s3.amazonaws.com/ghbc-windows-amd64-1.7.2-1db4ecdc.zip",
                             "type": "zip",
-                            "md5": "d98545e3305fde2837dca28bbccc991d",
+                            "md5": "4d524317d24f2fbc2c8c96ba16c5f7a5",
                             "bin": "ghbc-windows-amd64-1.7.2-1db4ecdc\\ghbc.exe"
                         },
                         "bin": "ghbc.exe",
