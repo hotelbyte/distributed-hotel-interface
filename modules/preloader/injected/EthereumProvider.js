@@ -95,7 +95,7 @@
         var method = payload.method || payload[0].method;
 
         if (typeof callback !== 'function') {
-           throw new Error('No callback given, sync calls are not possible anymore in Mist. Please use only async calls.');
+           throw new Error('No callback given, sync calls are not possible anymore in DHI. Please use only async calls.');
         }
 
         this.responseCallbacks[id] = callback;
@@ -163,7 +163,7 @@
 
     // For backwards compatibility of web3.currentProvider;
     EthereumProvider.prototype.sendSync = function () {
-        return {jsonrpc: '2.0', error: {"code": -32603, message: 'Sync calls are not anymore supported in Mist :\\'}};
+        return {jsonrpc: '2.0', error: {"code": -32603, message: 'Sync calls are not anymore supported in DHI :\\'}};
     };
     EthereumProvider.prototype.sendAsync = EthereumProvider.prototype.send;
     EthereumProvider.prototype.isConnected = function () {

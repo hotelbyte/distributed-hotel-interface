@@ -26,10 +26,10 @@ CRCCheck on
 RequestExecutionLevel admin
 
 !searchreplace APPNAMENOHYPEN ${APPNAME} "-" " "
-!define GROUPNAME "Ethereum"
-!define HELPURL "https://github.com/ethereum/mist/releases/issues"
-!define UPDATEURL "https://github.com/ethereum/mist/releases"
-!define ABOUTURL "https://ethereum.org"
+!define GROUPNAME "Hotelbyte"
+!define HELPURL "https://github.com/hotelbyte/distributed-hotel-interface/releases/issues"
+!define UPDATEURL "https://github.com/hotelbyte/distributed-hotel-interface/releases"
+!define ABOUTURL "https://hotelbyte.org"
 !define /date NOW "%Y%m%d"
 
 ## These must be integers and can be set on the command line by NSIS with "/DMAJORVERSION=0 /DMINORVERSION=8 /DBUILDVERSION=7"
@@ -65,7 +65,7 @@ ${EndIf}
 
     SetShellVarContext current
     StrCpy $DATADIR "$APPDATA\${APPNAME}"
-    StrCpy $NODEDATADIR "$APPDATA\Ethereum"
+    StrCpy $NODEDATADIR "$APPDATA\Hotelbyte"
     StrCpy $SHORTCUTDIR "$SMPROGRAMS\${APPNAMENOHYPEN}"
     StrCpy $DESKTOPDIR "$DESKTOP"
 
@@ -104,9 +104,9 @@ PageEx directory
   DirVar $FILEDIR
 PageExEnd
 
-## Select the location for Mist's data directory
+## Select the location for DHI's data directory
 #PageEx directory
-#  DirText "Select a location for Mist's data files (watched contracts, etc.)"
+#  DirText "Select a location for DHI's data files (watched contracts, etc.)"
 #  DirVar $DATADIR
 #PageExEnd
 
@@ -129,8 +129,8 @@ UninstPage instfiles
 ShowInstDetails show
 ShowUninstDetails show
 
-# Mist installer instructions
-Section Mist MIST_IDX
+# DHI installer instructions
+Section DHI MIST_IDX
     StrCpy $switch_overwrite 1
 
     # set the installation directory as the destination for the following actions
@@ -168,9 +168,9 @@ Section Mist MIST_IDX
     CreateShortCut "$SHORTCUTDIR\Uninstall.lnk" "$FILEDIR\uninstall.exe"
 
     ## Firewall - add rules
-    #SimpleFC::AdvAddRule "Geth incoming peers (TCP:30303)" ""  6 1 1 2147483647 1 "$DATADIR\binaries\Geth\unpacked\geth.exe" "" "" "Ethereum" 30303 "" "" ""
-    #SimpleFC::AdvAddRule "Geth outgoing peers (TCP:30303)" ""  6 2 1 2147483647 1 "$DATADIR\binaries\Geth\unpacked\geth.exe" "" "" "Ethereum" "" 30303 "" ""
-    #SimpleFC::AdvAddRule "Geth UDP discovery (UDP:30303)" "" 17 2 1 2147483647 1 "$DATADIR\binaries\Geth\unpacked\geth.exe" "" "" "Ethereum" "" 30303 "" ""
+    #SimpleFC::AdvAddRule "Ghbc incoming peers (TCP:30505)" ""  6 1 1 2147483647 1 "$DATADIR\binaries\Ghbc\unpacked\ghbc.exe" "" "" "Hotelbyte" 30505 "" "" ""
+    #SimpleFC::AdvAddRule "Ghbc outgoing peers (TCP:30505)" ""  6 2 1 2147483647 1 "$DATADIR\binaries\Ghbc\unpacked\ghbc.exe" "" "" "Hotelbyte" "" 30505 "" ""
+    #SimpleFC::AdvAddRule "Ghbc UDP discovery (UDP:30505)" "" 17 2 1 2147483647 1 "$DATADIR\binaries\Ghbc\unpacked\ghbc.exe" "" "" "Hotelbyte" "" 30505 "" ""
 
     # write registry strings for uninstallation
     WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${GROUPNAME} ${APPNAME}" "DisplayName" "${GROUPNAME} ${APPNAME}"
@@ -237,9 +237,9 @@ Section "uninstall"
     rmDir /r /REBOOTOK "$FILEDIR"
 
     ## Firewall - remove rules (if exists)
-    #SimpleFC::AdvRemoveRule "Geth incoming peers (TCP:30303)"
-    #SimpleFC::AdvRemoveRule "Geth outgoing peers (TCP:30303)"
-    #SimpleFC::AdvRemoveRule "Geth UDP discovery (UDP:30303)"
+    #SimpleFC::AdvRemoveRule "Ghbc incoming peers (TCP:30303)"
+    #SimpleFC::AdvRemoveRule "Ghbc outgoing peers (TCP:30303)"
+    #SimpleFC::AdvRemoveRule "Ghbc UDP discovery (UDP:30303)"
 
     # delete registry strings
     DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${GROUPNAME} ${APPNAME}"

@@ -13,7 +13,7 @@ const version = require('../package.json').version;
 
 
 const type = options.type;
-const applicationName = (options.wallet) ? 'Ethereum Wallet' : 'Mist';
+const applicationName = (options.wallet) ? 'DHI Wallet' : 'DHI';
 
 
 gulp.task('clean-dist', (cb) => {
@@ -60,7 +60,7 @@ gulp.task('transpile-modules', () => {
 gulp.task('copy-build-folder-files', () => {
     return gulp.src([
         `./icons/${type}/*`,
-        './interface/public/images/dmg-background.jpg'
+        './interface/public/images/bg-hotelbyte.jpg'
     ])
     .pipe(gulp.dest(`./dist_${type}/build`));
 });
@@ -89,11 +89,11 @@ gulp.task('bundling-interface', (cb) => {
         if (options.walletSource === 'local') {
             console.log('Use local wallet at ../meteor-dapp-wallet/app');
             bundle(`&& cd ../../meteor-dapp-wallet/app \
-                && meteor-build-client ../../mist/dist_${type}/app/interface/wallet -p ""`);
+                && meteor-build-client ../../distribution-hotel-interface/dist_${type}/app/interface/wallet -p ""`);
         } else {
-            console.log(`Pulling https://github.com/ethereum/meteor-dapp-wallet/tree/${options.walletSource} "${options.walletSource}" branch...`);
+            console.log(`Pulling https://github.com/hotelbyte/meteor-dapp-wallet/tree/${options.walletSource} "${options.walletSource}" branch...`);
             bundle(`&& cd ../dist_${type} \
-                && git clone --depth 1 https://github.com/ethereum/meteor-dapp-wallet.git \
+                && git clone --depth 1 https://github.com/hotelbyte/meteor-dapp-wallet.git \
                 && cd meteor-dapp-wallet/app \
                 && meteor-build-client ../../app/interface/wallet -p "" \
                 && cd ../../ \
@@ -121,9 +121,9 @@ gulp.task('build-dist', (cb) => {
         name: applicationName.replace(/\s/, ''),
         productName: applicationName,
         description: applicationName,
-        homepage: 'https://github.com/ethereum/mist',
+        homepage: 'https://github.com/hotelbyte/distribution-hotel-interface',
         build: {
-            appId: `com.ethereum.${type}`,
+            appId: `com.hotelbyte.${type}`,
             asar: true,
             directories: {
                 buildResources: '../build',
@@ -145,7 +145,7 @@ gulp.task('build-dist', (cb) => {
                 category: 'public.app-category.productivity',
             },
             dmg: {
-                background: '../build/dmg-background.jpg',
+                background: '../build/bg-hotelbyte.jpg',
                 iconSize: 128,
                 contents: [
                     {

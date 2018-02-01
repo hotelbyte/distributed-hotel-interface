@@ -23,9 +23,9 @@ exports.setup = function (options) {
                 filename: `${logFolder}/category/main.log`,
 
             },
-            EthereumNode: {
+            HotelbyteNode: {
                 type: 'file',
-                filename: `${logFolder}/category/ethereum_node.log`
+                filename: `${logFolder}/category/hotelbyte_node.log`
             },
             swarm: {
                 type: 'file',
@@ -34,7 +34,7 @@ exports.setup = function (options) {
         },
         categories: {
             default: { appenders: [ 'out', 'all', 'main' ], level },
-            EthereumNode: { appenders: [ 'out', 'all', 'EthereumNode' ], level },
+            HotelbyteNode: { appenders: [ 'out', 'all', 'HotelbyteNode' ], level },
             swarm: { appenders: [ 'out', 'all', 'swarm' ], level }
         }
     };

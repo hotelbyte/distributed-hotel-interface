@@ -16,7 +16,7 @@ import {
 describe('settings actions:', () => {
     describe('synchronous action creators', () => {
         it('should handle #syncFlags', () => {
-            const argv = { mode: 'mist', rpcMode: 'ipc', productionMode: true };
+            const argv = { mode: 'dhi', rpcMode: 'ipc', productionMode: true };
             const action = {
                 type: '[MAIN]:CLI_FLAGS:SYNC',
                 payload: { cliFlags: argv }

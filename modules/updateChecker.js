@@ -16,15 +16,15 @@ const check = exports.check = () => {
     let str = null;
 
     switch (Settings.uiMode) {  // eslint-disable-line default-case
-    case 'mist':
-        str = 'mist';
+    case 'dhi':
+        str = 'dhi';
         break;
     case 'wallet':
         str = 'wallet';
         break;
     }
 
-    return got('https://api.github.com/repos/ethereum/mist/releases', {
+    return got('https://api.github.com/repos/hotelbyte/distributed-hotel-interface/releases', {
         timeout: 3000,
         json: true,
     })

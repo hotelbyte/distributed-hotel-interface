@@ -45,7 +45,7 @@ class GenericWindow extends EventEmitter {
         });
 
         this.window.on('close', (e) => {
-            // Preserve window unless quitting Mist
+            // Preserve window unless quitting DHI
             if (store.getState().ui.appQuit) { return this.emit('close', e); }
             e.preventDefault();
             this.hide();
@@ -358,10 +358,10 @@ class Windows {
 
     getDefaultOptionsForType(type) {
         const mainWebPreferences = {
-            mist: {
+            dhi: {
                 nodeIntegration: true, /* necessary for webviews;
                     require will be removed through preloader */
-                preload: `${__dirname}/preloader/mistUI.js`,
+                preload: `${__dirname}/preloader/dhiUI.js`,
                 'overlay-fullscreen-video': true,
                 'overlay-scrollbars': true,
                 experimentalFeatures: true,
@@ -426,16 +426,16 @@ class Windows {
                 return {
                     primary: true,
                     electronOptions: {
-                        width: 576,
-                        height: 442,
+                        width: 676,
+                        height: 542,
                     },
                 };
             case 'about':
                 return {
                     url: `${global.interfacePopupsUrl}#about`,
                     electronOptions: {
-                        width: 420,
-                        height: 230,
+                        width: 620,
+                        height: 330,
                         alwaysOnTop: true,
                     },
                 };
@@ -462,8 +462,8 @@ class Windows {
             case 'requestAccount':
                 return {
                     electronOptions: {
-                        width: 420,
-                        height: 230,
+                        width: 460,
+                        height: 370,
                         alwaysOnTop: true,
                     },
                 };

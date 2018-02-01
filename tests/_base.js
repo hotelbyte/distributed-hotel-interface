@@ -6,7 +6,7 @@ const fs = require('fs');
 const Web3 = require('web3');
 const shell = require('shelljs');
 const path = require('path');
-const gethPrivate = require('geth-private');
+const ghbcPrivate = require('geth-private');
 const Application = require('spectron').Application;
 const chai = require('chai');
 const http = require('http');
@@ -21,8 +21,8 @@ process.env.TEST_MODE = 'true';
 
 const log = logger.create('base');
 
-const startGeth = function* () {
-    let gethPath;
+const startGhbc = function* () {
+    let ghbcPath;
 
     const config = JSON.parse(
         fs.readFileSync(path.join('clientBinaries.json')).toString()
@@ -30,16 +30,16 @@ const startGeth = function* () {
     const manager = new ClientBinaryManager(config);
     yield manager.init();
 
-    if (!manager.clients.Geth.state.available) {
-        gethPath = manager.clients.Geth.activeCli.fullPath;
-        console.info('Downloading geth...');
-        const downloadedGeth = yield manager.download('Geth');
-        gethPath = downloadedGeth.client.activeCli.fullPath;
-        console.info('Geth downloaded at:', gethPath);
+    if (!manager.clients.Ghbc.state.available) {
+        ghbcPath = manager.clients.Ghbc.activeCli.fullPath;
+        console.info('Downloading ghbc...');
+        const downloadedGhbc = yield manager.download('Ghbc');
+        ghbcPath = downloadedGhbc.client.activeCli.fullPath;
+        console.info('Ghbc downloaded at:', ghbcPath);
     }
 
-    const geth = gethPrivate({
-        gethPath,
+    const ghbc = ghbcPrivate({
+        ghbcPath,
         balance: 5,
         genesisBlock: {
             config: {
@@ -48,17 +48,17 @@ const startGeth = function* () {
             difficulty: '0x01',
             extraData: '0x01',
         },
-        gethOptions: {
+        ghbcOptions: {
             port: 58546,
             rpcport: 58545,
         },
     });
 
-    log.info('Geth starting...');
-    yield geth.start();
-    log.info('Geth started');
+    log.info('Ghbc starting...');
+    yield ghbc.start();
+    log.info('Ghbc started');
 
-    return geth;
+    return ghbc;
 };
 
 const startFixtureServer = function (serverPort) {
@@ -79,7 +79,7 @@ exports.mocha = (_module, options) => {
     const tests = {};
 
     options = _.extend({
-        app: 'mist',
+        app: 'dhi',
     }, options);
 
     _module.exports[options.name || path.basename(_module.filename)] = {
@@ -89,23 +89,23 @@ exports.mocha = (_module, options) => {
             this.assert = chai.assert;
             this.expect = chai.expect;
 
-            const mistLogFile = path.join(__dirname, 'mist.log');
+            const dhiLogFile = path.join(__dirname, 'dhi.log');
             const chromeLogFile = path.join(__dirname, 'chrome.log');
             const webdriverLogDir = path.join(__dirname, 'webdriver');
 
-            _.each([mistLogFile, webdriverLogDir, chromeLogFile], (e) => {
+            _.each([dhiLogFile, webdriverLogDir, chromeLogFile], (e) => {
                 log.info('Removing log files', e);
                 shell.rm('-rf', e);
             });
 
-            this.geth = yield startGeth();
+            this.ghbc = yield startGhbc();
 
-            const appFileName = (options.app === 'wallet') ? 'Ethereum Wallet' : 'Mist';
+            const appFileName = (options.app === 'wallet') ? 'Ethereum Wallet' : 'DHI';
             const platformArch = `${process.platform}-${process.arch}`;
             log.info(`${appFileName} :: ${platformArch}`);
 
             let appPath;
-            const ipcProviderPath = path.join(this.geth.dataDir, 'geth.ipc');
+            const ipcProviderPath = path.join(this.ghbc.dataDir, 'ghbc.ipc');
 
             switch (platformArch) {
             case 'darwin-x64':
@@ -135,8 +135,8 @@ exports.mocha = (_module, options) => {
                 path: appPath,
                 args: [
                     '--loglevel', 'debug',
-                    '--logfile', mistLogFile,
-                    '--node-datadir', this.geth.dataDir,
+                    '--logfile', dhiLogFile,
+                    '--node-datadir', this.ghbc.dataDir,
                     '--rpc', ipcProviderPath,
                 ],
                 webdriverLogPath: webdriverLogDir,
@@ -212,8 +212,8 @@ exports.mocha = (_module, options) => {
                     position: 0
                 });
                 Tabs.upsert({_id: 'wallet'}, {$set: {
-                    url: 'https://wallet.ethereum.org',
-                    redirect: 'https://wallet.ethereum.org',
+                    url: 'https://wallet.hotelbyte.org',
+                    redirect: 'https://wallet.hotelbyte.org',
                     position: 1,
                     permissions: { admin: true }
                 }});
@@ -231,9 +231,9 @@ exports.mocha = (_module, options) => {
                 yield this.app.stop();
             }
 
-            if (this.geth && this.geth.isRunning) {
-                console.log('Stopping geth...');
-                yield this.geth.stop();
+            if (this.ghbc && this.ghbc.isRunning) {
+                console.log('Stopping ghbc...');
+                yield this.ghbc.stop();
             }
 
             if (this.httpServer && this.httpServer.isListening) {
@@ -313,7 +313,7 @@ const Utils = {
             throw new Error('Page capture failed');
         }
 
-        fs.writeFileSync(path.join(__dirname, 'mist.png'), pageImage);
+        fs.writeFileSync(path.join(__dirname, 'dhi.png'), pageImage);
     },
     * getRealAccountBalances() {
         let accounts = this.web3.eth.accounts;
@@ -361,10 +361,10 @@ const Utils = {
         yield Q.delay(1000);
     },
     * startMining() {
-        yield this.geth.consoleExec('miner.start();');
+        yield this.ghbc.consoleExec('miner.start();');
     },
     * stopMining() {
-        yield this.geth.consoleExec('miner.stop();');
+        yield this.ghbc.consoleExec('miner.stop();');
     },
 
     * selectTab(tabId) {

@@ -40,12 +40,12 @@ Template.registerHelper('dirname', function () {
 });
 
 /**
-Return the Mist API.
+Return the DHI API.
 
-@method (mist)
+@method (dhi)
 **/
-Template.registerHelper('mist', function () {
-    return window.mist;
+Template.registerHelper('dhi', function () {
+    return window.dhi;
 });
 
 
@@ -55,7 +55,7 @@ Return the app mode.
 @method (mode)
 **/
 Template.registerHelper('mode', function () {
-    return window.mistMode;
+    return window.dhiMode;
 });
 
 /**
@@ -64,7 +64,7 @@ Return the friendly app name.
 @method (appName)
 **/
 Template.registerHelper('appName', function () {
-    return window.mistMode === 'mist' ? 'Mist' : 'Ethereum Wallet';
+    return window.dhiMode === 'dhi' ? 'DHI' : 'DHI Wallet';
 });
 
 /**
@@ -73,7 +73,11 @@ Return the app icon path.
 @method (iconPath)
 **/
 Template.registerHelper('appIconPath', function () {
-    return 'file://' + window.dirname + '/icons/' + window.mistMode + '/icon2x.png';
+    return 'file://' + window.dirname + '/icons/' + window.dhiMode + '/icon2x.png';
+});
+
+Template.registerHelper('appIconPathSplash', function () {
+    return 'file://' + window.dirname + '/icons/' + window.dhiMode + '/icon2x-splash.png';
 });
 
 /**

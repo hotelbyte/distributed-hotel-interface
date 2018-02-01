@@ -132,11 +132,11 @@ Template['popupWindows_onboardingScreen'].helpers({
 
                 // Only show states if they are changing
                 if (Math.round(1000 * Number(syncing._displayStatesDownload)) !== Math.round(1000 * Number(syncing.pulledStates / (syncing.knownStates + 1)))) {
-                    TemplateVar.set(template, 'syncStatusMessageLive', TAPi18n.__('mist.popupWindows.onboarding.syncMessageWithStates', syncing));
+                    TemplateVar.set(template, 'syncStatusMessageLive', TAPi18n.__('dhi.popupWindows.onboarding.syncMessageWithStates', syncing));
                 } else if (syncing.displayBlock === '0') {
                     TemplateVar.set(template, 'syncStatusMessageLive', '');
                 } else {
-                    TemplateVar.set(template, 'syncStatusMessageLive', TAPi18n.__('mist.popupWindows.onboarding.syncMessage', syncing));
+                    TemplateVar.set(template, 'syncStatusMessageLive', TAPi18n.__('dhi.popupWindows.onboarding.syncMessage', syncing));
                 }
             }
 
@@ -294,7 +294,7 @@ Template['popupWindows_onboardingScreen_importAccount'].events({
                     break;
                 default:
                     GlobalNotification.warning({
-                        content: TAPi18n.__('mist.popupWindows.onboarding.errors.unknownFile'),
+                        content: TAPi18n.__('dhi.popupWindows.onboarding.errors.unknownFile'),
                         duration: 4
                     });
                 }
@@ -320,7 +320,7 @@ Template['popupWindows_onboardingScreen_importAccount'].events({
         TemplateVar.set('showPassword', e.currentTarget.checked);
     },
     /**
-    Checks the password match sends the file path and password to the mist backend to import
+    Checks the password match sends the file path and password to the dhi backend to import
 
     @event submit form
     */
@@ -355,12 +355,12 @@ Template['popupWindows_onboardingScreen_importAccount'].events({
 
                 if (error === 'Decryption Failed') {
                     GlobalNotification.warning({
-                        content: TAPi18n.__('mist.popupWindows.onboarding.errors.wrongPassword'),
+                        content: TAPi18n.__('dhi.popupWindows.onboarding.errors.wrongPassword'),
                         duration: 4
                     });
                 } else {
                     GlobalNotification.warning({
-                        content: TAPi18n.__('mist.popupWindows.onboarding.errors.importFailed', { error
+                        content: TAPi18n.__('dhi.popupWindows.onboarding.errors.importFailed', { error
                         }),
                         duration: 4
                     });
@@ -436,12 +436,12 @@ Template['popupWindows_onboardingScreen_password'].events({
 
         if (pw !== pwRepeat) {
             GlobalNotification.warning({
-                content: TAPi18n.__('mist.popupWindows.requestAccount.errors.passwordMismatch'),
+                content: TAPi18n.__('dhi.popupWindows.requestAccount.errors.passwordMismatch'),
                 duration: 3
             });
         } else if (pw && pw.length < 8) {
             GlobalNotification.warning({
-                content: TAPi18n.__('mist.popupWindows.requestAccount.errors.passwordTooShort'),
+                content: TAPi18n.__('dhi.popupWindows.requestAccount.errors.passwordTooShort'),
                 duration: 3
             });
         } else if (pw && pw.length >= 8) {
@@ -450,7 +450,7 @@ Template['popupWindows_onboardingScreen_password'].events({
                 TemplateVar.set(template, 'creatingPassword', false);
 
                 // notifiy about backing up!
-                alert(TAPi18n.__('mist.popupWindows.requestAccount.backupHint'));
+                alert(TAPi18n.__('dhi.popupWindows.requestAccount.backupHint'));
 
                 if (!e) {
                     TemplateVar.setTo('.onboarding-account', 'newAccount', web3.toChecksumAddress(res));
@@ -462,7 +462,7 @@ Template['popupWindows_onboardingScreen_password'].events({
 
                 } else {
                     GlobalNotification.warning({
-                        content: TAPi18n.__('mist.popupWindows.onboarding.errors.nodeNotStartedYet'),
+                        content: TAPi18n.__('dhi.popupWindows.onboarding.errors.nodeNotStartedYet'),
                         duration: 4
                     });
                 }

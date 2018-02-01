@@ -165,6 +165,6 @@ Template['popupWindows_connectAccount'].events({
     @event click button.create-account
     */
     'click button.create-account': function (e, template) {
-        ipc.send('mistAPI_createAccount');
+        ipc.send('dhiAPI_createAccount');
     }
 });

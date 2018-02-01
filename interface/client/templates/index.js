@@ -28,7 +28,7 @@ Template.body.helpers({
         if (template) { return template; }
 
         if (_.isEmpty(location.hash)) {
-            $('title').text('Mist');
+            $('title').text('DHI');
             return 'layout_main';
         } else {
             var renderWindow = location.hash.match(/#([a-zA-Z]*)_?/);

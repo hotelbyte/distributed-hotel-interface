@@ -35,7 +35,7 @@ Template['popupWindows_splashScreen'].onCreated(function () {
     });
 
     ipc.on('uiAction_clientBinaryStatus', function (e, status) {
-        TemplateVar.set(template, 'text', TAPi18n.__('mist.startScreen.clientBinaries.' + status));
+        TemplateVar.set(template, 'text', TAPi18n.__('dhi.startScreen.clientBinaries.' + status));
         TemplateVar.set(template, 'showNetworkIndicator', status === 'done');
         TemplateVar.set(template, 'showProgressBar', false);
         TemplateVar.set(template, 'showStartAppButton', false);
@@ -47,7 +47,7 @@ Template['popupWindows_splashScreen'].onCreated(function () {
     ipc.on('uiAction_nodeStatus', function (e, status, errorTag) {
         switch (status) {
         case 'starting':
-            TemplateVar.set(template, 'text', TAPi18n.__('mist.startScreen.nodeStarting'));
+            TemplateVar.set(template, 'text', TAPi18n.__('dhi.startScreen.nodeStarting'));
             showNodeLog = true;
             TemplateVar.set(template, 'logText', null);
             TemplateVar.set(template, 'showProgressBar', false);
@@ -56,46 +56,45 @@ Template['popupWindows_splashScreen'].onCreated(function () {
             break;
 
         case 'started':
-            TemplateVar.set(template, 'text', TAPi18n.__('mist.startScreen.nodeStarted'));
+            TemplateVar.set(template, 'text', TAPi18n.__('dhi.startScreen.nodeStarted'));
             break;
 
         case 'connected':
-            TemplateVar.set(template, 'text', TAPi18n.__('mist.startScreen.nodeConnected'));
+            TemplateVar.set(template, 'text', TAPi18n.__('dhi.startScreen.nodeConnected'));
             lastSyncData = {};
             break;
 
         case 'stopping':
-            TemplateVar.set(template, 'text', TAPi18n.__('mist.startScreen.nodeStopping'));
+            TemplateVar.set(template, 'text', TAPi18n.__('dhi.startScreen.nodeStopping'));
             TemplateVar.set(template, 'showProgressBar', false);
             TemplateVar.set(template, 'showStartAppButton', false);
             break;
 
         case 'stopped':
-            TemplateVar.set(template, 'text', TAPi18n.__('mist.startScreen.nodeStopped'));
+            TemplateVar.set(template, 'text', TAPi18n.__('dhi.startScreen.nodeStopped'));
             break;
 
         case 'connectionTimeout':
-            TemplateVar.set(template, 'text', TAPi18n.__('mist.startScreen.nodeConnectionTimeout'));
+            TemplateVar.set(template, 'text', TAPi18n.__('dhi.startScreen.nodeConnectionTimeout'));
             break;
 
         case 'error':
-            errorTag = 'mist.startScreen.' + (errorTag || 'nodeError');
+            errorTag = 'dhi.startScreen.' + (errorTag || 'nodeError');
 
             TemplateVar.set(template, 'text', TAPi18n.__(errorTag));
             TemplateVar.set(template, 'showRetryConnectionButton', true);
-            TemplateVar.set(template, 'retryConnectionButtonText', TAPi18n.__('mist.startScreen.retryConnection'));
+            TemplateVar.set(template, 'retryConnectionButtonText', TAPi18n.__('dhi.startScreen.retryConnection'));
             break;
         }
     });
 
     ipc.on('uiAction_nodeSyncStatus', function (e, status, data) {
-        console.trace('Node sync status', status, data);
 
         TemplateVar.set(template, 'smallClass', 'small');
 
         if (status === 'inProgress') {
             TemplateVar.set(template, 'showStartAppButton', true);
-            TemplateVar.set(template, 'startAppButtonText', TAPi18n.__('mist.startScreen.launchApp'));
+            TemplateVar.set(template, 'startAppButtonText', TAPi18n.__('dhi.startScreen.launchApp'));
 
             if (data !== false) {
                 // if state is "in progress" and we have data
@@ -113,14 +112,14 @@ Template['popupWindows_splashScreen'].onCreated(function () {
                         || Number(lastSyncData.knownStates) !== Math.round(lastSyncData._displayKnownStates))
                     ) {
                         // Mostly downloading new states
-                        translationString = 'mist.startScreen.nodeSyncInfoStates';
+                        translationString = 'dhi.startScreen.nodeSyncInfoStates';
                     } else {
                         // Mostly downloading blocks
-                        translationString = 'mist.startScreen.nodeSyncInfo';
+                        translationString = 'dhi.startScreen.nodeSyncInfo';
                     }
                 } else {
                     // Not online
-                    translationString = 'mist.startScreen.nodeSyncConnecting';
+                    translationString = 'dhi.startScreen.nodeSyncConnecting';
                 }
 
                 // Saves data as numbers (hex)
@@ -135,9 +134,9 @@ Template['popupWindows_splashScreen'].onCreated(function () {
             } else {
                 // It's not connected anymore
                 if (web3.net.peerCount > 1) {
-                    translationString = 'mist.startScreen.nodeSyncFoundPeers';
+                    translationString = 'dhi.startScreen.nodeSyncFoundPeers';
                 } else {
-                    translationString = 'mist.startScreen.nodeSyncConnecting';
+                    translationString = 'dhi.startScreen.nodeSyncConnecting';
                 }
 
                 TemplateVar.set(template, 'lastSyncData', { 'peers': web3.net.peerCount });
@@ -145,7 +144,7 @@ Template['popupWindows_splashScreen'].onCreated(function () {
             }
 
             TemplateVar.set(template, 'logText', false);
-            TemplateVar.set(template, 'text', TAPi18n.__('mist.startScreen.nodeSyncing'));
+            TemplateVar.set(template, 'text', TAPi18n.__('dhi.startScreen.nodeSyncing'));
             TemplateVar.set(template, 'syncStatusMessage', translationString);
         }
     });
@@ -159,7 +158,7 @@ Template['popupWindows_splashScreen'].helpers({
     @method mode
     */
     'mode': function () {
-        return window.mistMode;
+        return window.dhiMode;
     },
     /**
     Returns the icon path
@@ -167,7 +166,7 @@ Template['popupWindows_splashScreen'].helpers({
     @method iconPath
     */
     'iconPath': function () {
-        return 'file://' + window.dirname + '/icons/' + window.mistMode + '/icon2x.png';
+        return 'file://' + window.dirname + '/icons/' + window.dhiMode + '/icon2x.png';
     },
     /**
     Updates the Sync Message live

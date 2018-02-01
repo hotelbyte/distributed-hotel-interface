@@ -4,7 +4,7 @@
 const _ = require('underscore');
 require('./include/common')('browser');
 const { ipcRenderer, webFrame, remote } = require('electron');
-const mist = require('./include/mistAPI.js');
+const dhi = require('./include/dhiAPI.js');
 require('./include/getFavicon.js');
 require('./include/getMetaTags.js');
 require('./include/setBasePath')('interface');
@@ -84,10 +84,10 @@ window.addEventListener('message', function message(event) {
         // make sure we only send allowed properties
         ipcRenderer.send('ipcProvider-write', JSON.stringify(data.message));
 
-    // mistAPI
-    } else if (/^mistAPI_[a-z]/i.test(data.type)) {
+    // dhiAPI
+    } else if (/^dhiAPI_[a-z]/i.test(data.type)) {
 
-        if (data.type === 'mistAPI_requestAccount') {
+        if (data.type === 'dhiAPI_requestAccount') {
             ipcRenderer.send(data.type, data.message);
         } else {
             ipcRenderer.sendToHost(data.type, data.message);
@@ -104,7 +104,7 @@ const postMessage = function (payload) {
 };
 
 // custom Events
-['uiAction_windowMessage', 'mistAPI_callMenuFunction'].forEach(function (type) {
+['uiAction_windowMessage', 'dhiAPI_callMenuFunction'].forEach(function (type) {
     ipcRenderer.on(type, function onIpcRenderer(e, result) {
 
         // this type needs special packaging
@@ -137,16 +137,16 @@ const postMessage = function (payload) {
 // load ethereumProvider
 const bignumber = fs.readFileSync(path.join(__dirname, '/injected/BigNumber.js')).toString();
 const eventEmitter3 = fs.readFileSync(path.join(__dirname, '/injected/EventEmitter3.js')).toString();
-let mistAPI = fs.readFileSync(path.join(__dirname, '/injected/mistAPI.js')).toString();
+let dhiAPI = fs.readFileSync(path.join(__dirname, '/injected/dhiAPI.js')).toString();
 const ethereumProvider = fs.readFileSync(path.join(__dirname, '/injected/EthereumProvider.js')).toString();
 
-mistAPI = mistAPI.replace('__version__', packageJson.version)
+dhiAPI = dhiAPI.replace('__version__', packageJson.version)
         .replace('__license__', packageJson.license)
         .replace('__platform__', process.platform)
         .replace('__solidityVersion__', String(packageJson.dependencies.solc).match(/\d+\.\d+\.\d+/)[0]);
 
 webFrame.executeJavaScript(
-    mistAPI +
+    dhiAPI +
     bignumber +
     eventEmitter3 +
     ethereumProvider

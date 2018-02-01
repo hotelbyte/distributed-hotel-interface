@@ -11,7 +11,7 @@ const Windows = require('./windows');
 const logger = require('./utils/logger');
 const appMenu = require('./menuItems');
 const Settings = require('./settings');
-const ethereumNode = require('./ethereumNode.js');
+const hotelbyteNode = require('./hotelbyteNode.js');
 const keyfileRecognizer = require('ethereum-keyfile-recognizer');
 
 import { getLanguage } from './core/settings/actions';
@@ -131,21 +131,21 @@ ipc.on('backendAction_checkWalletFile', (e, path) => {
 
                 let keystorePath = Settings.userHomePath;
                 // eth
-                if (ethereumNode.isEth) {
+                if (hotelbyteNode.isEth) {
                     if (process.platform === 'win32') {
                         keystorePath = `${Settings.appDataPath}\\Web3\\keys`;
                     } else {
                         keystorePath += '/.web3/keys';
                     }
-                // geth
+                // ghbc
                 } else {
-                    if (process.platform === 'darwin') keystorePath += '/Library/Ethereum/keystore';
+                    if (process.platform === 'darwin') keystorePath += '/Library/Hotelbyte/keystore';
 
                     if (process.platform === 'freebsd' ||
                         process.platform === 'linux' ||
-                        process.platform === 'sunos') keystorePath += '/.ethereum/keystore';
+                        process.platform === 'sunos') keystorePath += '/.hotelbyte/keystore';
 
-                    if (process.platform === 'win32') keystorePath = `${Settings.appDataPath}\\Ethereum\\keystore`;
+                    if (process.platform === 'win32') keystorePath = `${Settings.appDataPath}\\Hotelbyte\\keystore`;
                 }
 
                 if (!/^[0-9a-fA-F]{40}$/.test(keyfile.address)) {
@@ -176,12 +176,12 @@ ipc.on('backendAction_importWalletFile', (e, path, pw) => {
     const ClientBinaryManager = require('./clientBinaryManager');  // eslint-disable-line global-require
     let error = false;
 
-    const binPath = ClientBinaryManager.getClient('geth').binPath;
+    const binPath = ClientBinaryManager.getClient('ghbc').binPath;
     const nodeProcess = spawn(binPath, ['wallet', 'import', path]);
 
     nodeProcess.once('error', () => {
         error = true;
-        e.sender.send('uiAction_importedWalletFile', 'Couldn\'t start the "geth wallet import <file.json>" process.');
+        e.sender.send('uiAction_importedWalletFile', 'Couldn\'t start the "ghbc wallet import <file.json>" process.');
     });
     nodeProcess.stdout.on('data', (_data) => {
         const data = _data.toString();
@@ -226,12 +226,12 @@ const createAccountPopup = (e) => {
 };
 
 // MIST API
-ipc.on('mistAPI_createAccount', createAccountPopup);
+ipc.on('dhiAPI_createAccount', createAccountPopup);
 
-ipc.on('mistAPI_requestAccount', (e) => {
+ipc.on('dhiAPI_requestAccount', (e) => {
     if (global.mode === 'wallet') {
         createAccountPopup(e);
-    } else { // Mist
+    } else { // DHI
         Windows.createPopup('connectAccount', { ownerId: e.sender.id });
     }
 });

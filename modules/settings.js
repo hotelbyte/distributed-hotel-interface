@@ -29,9 +29,9 @@ class Settings {
 
         store.dispatch(syncFlags(argv));
 
-        // If -v flag provided, log the Mist version and exit
+        // If -v flag provided, log the DHI version and exit
         if (argv.version) {
-            settingsLog.info(`Mist v${this.appVersion}`);
+            settingsLog.info(`DHI v${this.appVersion}`);
             process.exit(0);
         }
 
@@ -59,14 +59,14 @@ class Settings {
     }
 
 
-    // @returns "Application Support/Mist" in production mode
+    // @returns "Application Support/DHI" in production mode
     // @returns "Application Support/Electron" in development mode
     get userDataPath() {
         return app.getPath('userData');
     }
 
     get dbFilePath() {
-        const dbFileName = (this.inAutoTestMode) ? 'mist.test.lokidb' : 'mist.lokidb';
+        const dbFileName = (this.inAutoTestMode) ? 'dhi.test.lokidb' : 'dhi.lokidb';
         return path.join(this.userDataPath, dbFileName);
     }
 
@@ -88,7 +88,7 @@ class Settings {
     }
 
     get appName() {
-        return this.uiMode === 'mist' ? 'Mist' : 'Ethereum Wallet';
+        return this.uiMode === 'dhi' ? 'DHI' : 'DHI Wallet';
     }
 
     get appLicense() {
@@ -111,8 +111,8 @@ class Settings {
         return argv.swarmurl;
     }
 
-    get gethPath() {
-        return argv.gethpath;
+    get ghbcPath() {
+        return argv.ghbcpath;
     }
 
     get ethPath() {
@@ -123,7 +123,7 @@ class Settings {
         if (argv.rpc && argv.rpc.indexOf('http') === 0)
             return 'http';
         if (argv.rpc && argv.rpc.indexOf('ws:') === 0) {
-            settingsLog.warn('Websockets are not yet supported by Mist, using default IPC connection');
+            settingsLog.warn('Websockets are not yet supported by DHI, using default IPC connection');
             argv.rpc = null;
             return 'ipc';
         } else
@@ -156,13 +156,13 @@ class Settings {
         ipcPath = this.userHomePath;
 
         if (process.platform === 'darwin') {
-            ipcPath += '/Library/Ethereum/geth.ipc';
+            ipcPath += '/Library/Hotelbyte/ghbc.ipc';
         } else if (process.platform === 'freebsd' ||
             process.platform === 'linux' ||
             process.platform === 'sunos') {
-            ipcPath += '/.ethereum/geth.ipc';
+            ipcPath += '/.hotelbyte/ghbc.ipc';
         } else if (process.platform === 'win32') {
-            ipcPath = '\\\\.\\pipe\\geth.ipc';
+            ipcPath = '\\\\.\\pipe\\ghbc.ipc';
         }
 
         settingsLog.debug(`IPC path: ${ipcPath}`);
@@ -264,7 +264,7 @@ class Settings {
 
     loadUserData(path2) {
         const fullPath = this.constructUserDataPath(path2);
-
+        console.log(fullPath);
         settingsLog.trace('Load user data', fullPath);
 
       // check if the file exists
@@ -314,8 +314,8 @@ Command line argument parsing
 
 // Load config
 const defaultConfig = {
-    mode: 'mist',
-    production: false,
+    mode: 'dhi',
+    production: false, // warning set this to true if you want to build in production mode only!
 };
 
 try {
@@ -325,26 +325,26 @@ try {
 }
 
 const argv = require('yargs')
-    .usage('Usage: $0 [Mist options] [Node options]')
+    .usage('Usage: $0 [DHI options] [Node options]')
     .option({
         mode: {
             alias: 'm',
             demand: false,
             default: defaultConfig.mode,
-            describe: 'App UI mode: wallet, mist.',
+            describe: 'App UI mode: wallet, dhi.',
             requiresArg: true,
             nargs: 1,
             type: 'string',
-            group: 'Mist options:',
+            group: 'DHI options:',
         },
         node: {
             demand: false,
             default: null,
-            describe: 'Node to use: geth, eth',
+            describe: 'Node to use: ghbc, eth',
             requiresArg: true,
             nargs: 1,
             type: 'string',
-            group: 'Mist options:',
+            group: 'DHI options:',
         },
         network: {
             demand: false,
@@ -353,7 +353,7 @@ const argv = require('yargs')
             requiresArg: true,
             nargs: 1,
             type: 'string',
-            group: 'Mist options:',
+            group: 'DHI options:',
         },
         rpc: {
             demand: false,
@@ -361,31 +361,31 @@ const argv = require('yargs')
             requiresArg: true,
             nargs: 1,
             type: 'string',
-            group: 'Mist options:',
+            group: 'DHI options:',
         },
         swarm: {
             describe: 'Enable Swarm on start.',
             requiresArg: false,
             nargs: 0,
             type: 'boolean',
-            group: 'Mist options:',
+            group: 'DHI options:',
         },
         swarmurl: {
             demand: false,
             default: 'http://localhost:8500',
-            describe: 'URL serving the Swarm HTTP API. If null, Mist will open a local node.',
+            describe: 'URL serving the Swarm HTTP API. If null, DHI will open a local node.',
             requiresArg: true,
             nargs: 1,
             type: 'string',
-            group: 'Mist options:',
+            group: 'DHI options:',
         },
-        gethpath: {
+        ghbcpath: {
             demand: false,
-            describe: 'Path to Geth executable to use instead of default.',
+            describe: 'Path to Ghbc executable to use instead of default.',
             requiresArg: true,
             nargs: 1,
             type: 'string',
-            group: 'Mist options:',
+            group: 'DHI options:',
         },
         ethpath: {
             demand: false,
@@ -393,7 +393,7 @@ const argv = require('yargs')
             requiresArg: true,
             nargs: 1,
             type: 'string',
-            group: 'Mist options:',
+            group: 'DHI options:',
         },
         'ignore-gpu-blacklist': {
             demand: false,
@@ -401,15 +401,15 @@ const argv = require('yargs')
             requiresArg: false,
             nargs: 0,
             type: 'boolean',
-            group: 'Mist options:',
+            group: 'DHI options:',
         },
         'reset-tabs': {
             demand: false,
-            describe: 'Reset Mist tabs to their default settings.',
+            describe: 'Reset DHI tabs to their default settings.',
             requiresArg: false,
             nargs: 0,
             type: 'boolean',
-            group: 'Mist options:',
+            group: 'DHI options:',
         },
         loglevel: {
             demand: false,
@@ -418,23 +418,23 @@ const argv = require('yargs')
             requiresArg: true,
             nargs: 1,
             type: 'string',
-            group: 'Mist options:',
+            group: 'DHI options:',
         },
         syncmode: {
             demand: false,
             requiresArg: true,
-            describe: 'Geth synchronization mode: [fast|light|full]',
+            describe: 'Ghbc synchronization mode: [fast|light|full]',
             nargs: 1,
             type: 'string',
-            group: 'Mist options:',
+            group: 'DHI options:',
         },
         version: {
             alias: 'v',
             demand: false,
             requiresArg: false,
             nargs: 0,
-            describe: 'Display Mist version.',
-            group: 'Mist options:',
+            describe: 'Display DHI version.',
+            group: 'DHI options:',
             type: 'boolean',
         },
         skiptimesynccheck: {
@@ -442,11 +442,11 @@ const argv = require('yargs')
             requiresArg: false,
             nargs: 0,
             describe: 'Disable checks for the presence of automatic time sync on your OS.',
-            group: 'Mist options:',
+            group: 'DHI options:',
             type: 'boolean',
         },
         '': {
-            describe: 'To pass options to the underlying node (e.g. Geth) use the --node- prefix, e.g. --node-datadir',
+            describe: 'To pass options to the underlying node (e.g. Ghbc) use the --node- prefix, e.g. --node-datadir',
             group: 'Node options:',
         },
     })
@@ -468,6 +468,7 @@ for (const optIdx in argv) {
 
 // some options are shared
 if (argv.ipcpath) {
+    console.log(argv.ipcpath);
     argv.nodeOptions.push('--ipcpath', argv.ipcpath);
 }
 

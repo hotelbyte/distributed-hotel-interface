@@ -14,4 +14,4 @@ globals:
   Helpers: true
   Blaze: true
   EthAccounts: true
-  mist: true
+  dhi: true

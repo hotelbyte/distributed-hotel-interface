@@ -32,7 +32,7 @@ describe('the settings reducer', () => {
             type: '[MAIN]:CLI_FLAGS:SYNC',
             payload: {
                 cliFlags: {
-                    mode: 'mist',
+                    mode: 'dhi',
                     syncmode: 'light',
                     swarmurl: 'http://localhost:8585'
                 }
@@ -40,7 +40,7 @@ describe('the settings reducer', () => {
         };
         const expectedState = Object.assign({}, initialState, {
             cliFlags: {
-                mode: 'mist',
+                mode: 'dhi',
                 syncmode: 'light',
                 swarmurl: 'http://localhost:8585'
             }

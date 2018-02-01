@@ -26,7 +26,7 @@ if (typeof window.dbSync !== 'undefined') {
 
 // contains blockchain meta data
 // LastBlock = new Mongo.Collection('lastblock', {connection: null});
-// new PersistentMinimongo2(LastBlock, 'Mist');
+// new PersistentMinimongo2(LastBlock, 'DHI');
 // if(!LastBlock.findOne('latest'))
 //     LastBlock.insert({
 //         _id: 'latest',

@@ -5,15 +5,15 @@
 
         <div class="main-content">
             <div class="onboarding-section onboarding-start">
-                <p class="description">{{i18n "mist.popupWindows.onboarding.description"}}</p>
+                <p class="description">{{i18n "dhi.popupWindows.onboarding.description"}}</p>
                 <p>
-                  <button class="goto-import-account"> {{i18n "mist.popupWindows.onboarding.gotoMainnet"}} </button>
-                  {{i18n "mist.popupWindows.onboarding.gotoMainnetDescription"}}
+                  <button class="goto-import-account"> {{i18n "dhi.popupWindows.onboarding.gotoMainnet"}} </button>
+                  {{i18n "dhi.popupWindows.onboarding.gotoMainnetDescription"}}
                 </p>
-                <p>
-                    <button class="start-testnet"> {{i18n "mist.popupWindows.onboarding.goToTestnet"}} </button>
-                    {{i18n "mist.popupWindows.onboarding.goToTestnetDescription"}}
-                </p>
+                <!-- TODO p>
+                    <button class="start-testnet"> {{i18n "dhi.popupWindows.onboarding.goToTestnet"}} </button>
+                    {{i18n "dhi.popupWindows.onboarding.goToTestnetDescription"}}
+                </p -->
             </div>
 
             <div class="onboarding-section onboarding-import-account row">
@@ -35,36 +35,36 @@
 
             <div class="onboarding-section onboarding-account row">
                 {{#if TemplateVar.get "testnet"}}
-                    <h1>{{i18n "mist.popupWindows.onboarding.learnIt"}} </h1>
+                    <h1>{{i18n "dhi.popupWindows.onboarding.learnIt"}} </h1>
                 {{else}}
-                    <h1>{{i18n "mist.popupWindows.onboarding.accountTitle"}} </h1>
+                    <h1>{{i18n "dhi.popupWindows.onboarding.accountTitle"}} </h1>
                 {{/if}}
 
                 <div class="col col-6 col-left">
                     <p>
-                        {{i18n "mist.popupWindows.onboarding.etherDescription"}}
+                        {{i18n "dhi.popupWindows.onboarding.etherDescription"}}
                     </p>
 
                     {{#if TemplateVar.get "testnet"}}
-                        <p>{{{i18n "mist.popupWindows.onboarding.faucetDescription"}}}</p>
+                        <p>{{{i18n "dhi.popupWindows.onboarding.faucetDescription"}}}</p>
                     {{else}}
-                        <p>{{{i18n "mist.popupWindows.onboarding.loadItDescription"}}}</p>
+                        <!-- TODO p>{{{i18n "dhi.popupWindows.onboarding.loadItDescription"}}}</p -->
                     {{/if}}
                 </div>
 
-                <div class="col col-6 col-deposit">
+                <!-- TODO get exchanges for that div class="col col-6 col-deposit">
                     {{#if TemplateVar.get "newAccount"}}
                         {{> dapp_identicon identity=(TemplateVar.get "newAccount")}}
-                        <div class="you"> {{i18n "mist.popupWindows.onboarding.you"}}  </div>
-                        <input type="text" value="{{i18n 'mist.popupWindows.onboarding.etherbase'}}" class="name" disabled>
+                        <div class="you"> {{i18n "dhi.popupWindows.onboarding.you"}}  </div>
+                        <input type="text" value="{{i18n 'dhi.popupWindows.onboarding.etherbase'}}" class="name" disabled>
                         <h6 class="address"> {{TemplateVar.get "newAccount"}} </h6>
 
                         {{#unless TemplateVar.get "testnet"}}
-                            <a href="https://shapeshift.io/shifty.html?destination={{newAccountLowerCase}}&amp;output=ETH&amp;apiKey=ef8312d8c9b9dda64fb852e8683eac6c33123f8743ff11383fb3bab29a364c01c27343fced4e628db8d5d66d763565763f8699c0fc903ec23db31cb908a944c8" class="button dapp-block-button dapp-small shapeshift" target="_popup"> {{i18n "mist.popupWindows.onboarding.depositBitcoin"}}  </a>
-                            <h6> {{{i18n "mist.popupWindows.onboarding.viaShapeshift"}}} </h6>
+                            <a href="https://shapeshift.io/shifty.html?destination={{newAccountLowerCase}}&amp;output=ETH&amp;apiKey=ef8312d8c9b9dda64fb852e8683eac6c33123f8743ff11383fb3bab29a364c01c27343fced4e628db8d5d66d763565763f8699c0fc903ec23db31cb908a944c8" class="button dapp-block-button dapp-small shapeshift" target="_popup"> {{i18n "dhi.popupWindows.onboarding.depositBitcoin"}}  </a>
+                            <h6> {{{i18n "dhi.popupWindows.onboarding.viaShapeshift"}}} </h6>
                         {{/unless}}
                     {{/if}}
-                </div>
+                </div -->
                 <div class="col col-12 footer-buttons">
                     <button class="goto-start"> {{i18n "buttons.back"}} </button>                
                     <button class="goto-tutorial-1 right-align"> {{i18n "buttons.next"}} </button>
@@ -72,10 +72,10 @@
             </div>
 
             <div class="onboarding-section onboarding-tutorial-1 row">
-                <h1> {{i18n "mist.popupWindows.onboarding.learnIt"}} </h1>
+                <h1> {{i18n "dhi.popupWindows.onboarding.learnIt"}} </h1>
                 <div class="col col-6 col-left">
-                    {{{i18n "mist.popupWindows.onboarding.tutorial1Description"}}}
-                    <p><a href="https://www.ethereum.org/token" class="button" target="_blank">{{i18n "mist.popupWindows.onboarding.buttons.learnReceipt"}}</a></p>
+                    {{{i18n "dhi.popupWindows.onboarding.tutorial1Description"}}}
+                    <p><a href="https://www.ethereum.org/token" class="button" target="_blank">{{i18n "dhi.popupWindows.onboarding.buttons.learnReceipt"}}</a></p>
                 </div>
                 <div class="col col-6 tutorial-token"></div>
                 <div class="col col-12 footer-buttons">
@@ -85,10 +85,10 @@
             </div>
 
             <div class="onboarding-section onboarding-tutorial-2 row">
-                <h1> {{i18n "mist.popupWindows.onboarding.learnIt"}} </h1>
+                <h1> {{i18n "dhi.popupWindows.onboarding.learnIt"}} </h1>
                 <div class="col col-6 col-left">
-                    {{{i18n "mist.popupWindows.onboarding.tutorial2Description"}}}
-                    <p><a href="https://www.ethereum.org/crowdsale" class="button" target="_blank">{{i18n "mist.popupWindows.onboarding.buttons.learnReceipt"}}</a></p>
+                    {{{i18n "dhi.popupWindows.onboarding.tutorial2Description"}}}
+                    <p><a href="https://www.ethereum.org/crowdsale" class="button" target="_blank">{{i18n "dhi.popupWindows.onboarding.buttons.learnReceipt"}}</a></p>
                 </div>
                 <div class="col col-6 tutorial-crowdsale"></div>
                 <div class="col col-12 footer-buttons">
@@ -98,10 +98,10 @@
             </div>
 
             <div class="onboarding-section onboarding-tutorial-3 row">
-                <h1> {{i18n "mist.popupWindows.onboarding.learnIt"}} </h1>
+                <h1> {{i18n "dhi.popupWindows.onboarding.learnIt"}} </h1>
                 <div class="col col-6 col-left">
-                    {{{i18n "mist.popupWindows.onboarding.tutorial3Description"}}}
-                    <p><a href="https://www.ethereum.org/dao" class="button" target="_blank">{{i18n "mist.popupWindows.onboarding.buttons.learnReceipt"}}</a></p>
+                    {{{i18n "dhi.popupWindows.onboarding.tutorial3Description"}}}
+                    <p><a href="https://www.ethereum.org/dao" class="button" target="_blank">{{i18n "dhi.popupWindows.onboarding.buttons.learnReceipt"}}</a></p>
                 </div>
                 <div class="col col-6 tutorial-dao"></div>
                 <div class="col col-12 footer-buttons">
@@ -116,17 +116,17 @@
 
             {{syncStatus}}
             {{#if TemplateVar.get 'readyToLaunch'}}
-                <button class="launch-app"> {{i18n "mist.popupWindows.onboarding.buttons.launchApp"}} </button>
+                <button class="launch-app"> {{i18n "dhi.popupWindows.onboarding.buttons.launchApp"}} </button>
             {{else}}
                 {{#with TemplateVar.get "syncing"}}
-                    <div class="status"> {{i18n "mist.popupWindows.onboarding.downloadingBlocks"}} ({{TemplateVar.get "peerCount"}} {{i18n 'mist.nodeInfo.peers'}})</div>
+                    <div class="status"> {{i18n "dhi.popupWindows.onboarding.downloadingBlocks"}} ({{TemplateVar.get "peerCount"}} {{i18n 'dhi.nodeInfo.peers'}})</div>
                     <div class="blocks">  {{syncStatusMessage}}  </div>
                 {{else}}
                     <div class="status">
                     {{#if TemplateVar.get "peerCount"}}
-                        {{i18n 'mist.startScreen.nodeSyncFoundPeers' peers=(TemplateVar.get 'peerCount')}}
+                        {{i18n 'dhi.startScreen.nodeSyncFoundPeers' peers=(TemplateVar.get 'peerCount')}}
                     {{else}}
-                        {{i18n 'mist.startScreen.nodeSyncConnecting'}}
+                        {{i18n 'dhi.startScreen.nodeSyncConnecting'}}
                     {{/if}}
                     </div>
                 {{/with}}
@@ -138,48 +138,48 @@
 
 
 <template name="popupWindows_onboardingScreen_importAccount">
-    <h1>{{i18n "mist.popupWindows.onboarding.doYouHaveAWalletFile"}}</h1>
+    <h1>{{i18n "dhi.popupWindows.onboarding.doYouHaveAWalletFile"}}</h1>
     <div class="col col-6 col-left">
-        {{{i18n "mist.popupWindows.onboarding.walletFileDescription"}}}
+        {{{i18n "dhi.popupWindows.onboarding.walletFileDescription"}}}
     </div>
     {{#if TemplateVar.get "filePath"}}
         <div class="col col-6">
             {{#if TemplateVar.get "importing"}}
                 <span class="dapp-identicon dapp-icon-loading"></span>
-                <h2 style="display: block; text-align: center;">{{i18n "mist.popupWindows.onboarding.importing"}}</h2>
+                <h2 style="display: block; text-align: center;">{{i18n "dhi.popupWindows.onboarding.importing"}}</h2>
             {{else}}
             <form action="about:blank" target="dapp-form-helper-iframe">
-                <input type="{{showPassword}}" placeholder="{{i18n 'mist.popupWindows.requestAccount.enterPassword'}}" class="password">
+                <input type="{{showPassword}}" placeholder="{{i18n 'dhi.popupWindows.requestAccount.enterPassword'}}" class="password">
                 <br><br>
                 <input type="checkbox" name="elements_input_bool" class="show-password abi-input">
-                <label for="show-password">{{i18n "mist.popupWindows.onboarding.buttons.showPassword"}}</label>
+                <label for="show-password">{{i18n "dhi.popupWindows.onboarding.buttons.showPassword"}}</label>
                 <br><br>
-                <button type="submit" style="margin-left: 15px;">{{i18n "mist.popupWindows.onboarding.buttons.importAccount"}}</button>
+                <button type="submit" style="margin-left: 15px;">{{i18n "dhi.popupWindows.onboarding.buttons.importAccount"}}</button>
             </form>
             {{/if}}
         </div>
     {{else}}
-        <div class="col col-6 dropable"> {{i18n "mist.popupWindows.onboarding.dropFilesHere"}}</div>
+        <div class="col col-6 dropable"> {{i18n "dhi.popupWindows.onboarding.dropFilesHere"}}</div>
     {{/if}}
 </template>
 
 
 <template name="popupWindows_onboardingScreen_password">
-    <h1> {{i18n "mist.popupWindows.onboarding.protectTitle"}} </h1>
+    <h1> {{i18n "dhi.popupWindows.onboarding.protectTitle"}} </h1>
     <form action="about:blank" target="dapp-form-helper-iframe">
         <div class="col col-6 col-left">
-            <p> {{i18n "mist.popupWindows.onboarding.protectDescription"}} </p>
+            <p> {{i18n "dhi.popupWindows.onboarding.protectDescription"}} </p>
         </div>
         <div class="col col-6">
             {{#if TemplateVar.get "creatingPassword"}}
                 <span class="dapp-identicon dapp-icon-loading"></span>
-                <h2 style="display: block; text-align: center;">{{i18n "mist.popupWindows.onboarding.creating"}}</h2>
+                <h2 style="display: block; text-align: center;">{{i18n "dhi.popupWindows.onboarding.creating"}}</h2>
             {{else}}
-                <input type="{{passwordInputType}}" placeholder="{{i18n 'mist.popupWindows.requestAccount.enterPassword'}}" class="password {{#if TemplateVar.get 'passwordsMismatch'}}dapp-error{{/if}}">
-                <input type="{{passwordInputType}}" placeholder="{{i18n 'mist.popupWindows.requestAccount.repeatPassword'}}" class="password-repeat {{#if TemplateVar.get 'passwordsMismatch'}}dapp-error{{/if}}">
+                <input type="{{passwordInputType}}" placeholder="{{i18n 'dhi.popupWindows.requestAccount.enterPassword'}}" class="password {{#if TemplateVar.get 'passwordsMismatch'}}dapp-error{{/if}}">
+                <input type="{{passwordInputType}}" placeholder="{{i18n 'dhi.popupWindows.requestAccount.repeatPassword'}}" class="password-repeat {{#if TemplateVar.get 'passwordsMismatch'}}dapp-error{{/if}}">
                 <br><br>
                 <input type="checkbox" name="elements_input_bool" class="show-password abi-input">
-                <label for="show-password">{{i18n "mist.popupWindows.onboarding.buttons.showPassword"}}</label>
+                <label for="show-password">{{i18n "dhi.popupWindows.onboarding.buttons.showPassword"}}</label>
             {{/if}}
         </div>
 

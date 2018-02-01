@@ -327,7 +327,7 @@ Template['popupWindows_sendTransactionConfirmation'].events({
         // check if account is about to send to itself
         if (data.to && data.from === data.to.toLowerCase()) {
             GlobalNotification.warning({
-                content: TAPi18n.__('mist.popupWindows.sendTransactionConfirmation.errors.sameAccount'),
+                content: TAPi18n.__('dhi.popupWindows.sendTransactionConfirmation.errors.sameAccount'),
                 duration: 5
             });
 
@@ -359,22 +359,22 @@ Template['popupWindows_sendTransactionConfirmation'].events({
                 });
                 if (e.message.indexOf('Unable to connect to socket: timeout') !== -1) {
                     GlobalNotification.warning({
-                        content: TAPi18n.__('mist.popupWindows.sendTransactionConfirmation.errors.connectionTimeout'),
+                        content: TAPi18n.__('dhi.popupWindows.sendTransactionConfirmation.errors.connectionTimeout'),
                         duration: 5
                     });
                 } else if (e.message.indexOf('could not decrypt key with given passphrase') !== -1) {
                     GlobalNotification.warning({
-                        content: TAPi18n.__('mist.popupWindows.sendTransactionConfirmation.errors.wrongPassword'),
+                        content: TAPi18n.__('dhi.popupWindows.sendTransactionConfirmation.errors.wrongPassword'),
                         duration: 3
                     });
                 } else if (e.message.indexOf('multiple keys match address') !== -1) {
                     GlobalNotification.warning({
-                        content: TAPi18n.__('mist.popupWindows.sendTransactionConfirmation.errors.multipleKeysMatchAddress'),
+                        content: TAPi18n.__('dhi.popupWindows.sendTransactionConfirmation.errors.multipleKeysMatchAddress'),
                         duration: 10
                     });
                 } else if (e.message.indexOf('Insufficient funds for gas * price + value') !== -1) {
                     GlobalNotification.warning({
-                        content: TAPi18n.__('mist.popupWindows.sendTransactionConfirmation.errors.insufficientFundsForGas'),
+                        content: TAPi18n.__('dhi.popupWindows.sendTransactionConfirmation.errors.insufficientFundsForGas'),
                         duration: 5
                     });
                 } else {

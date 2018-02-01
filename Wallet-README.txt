@@ -9,11 +9,11 @@ The wallet contains its own node, but can also use an already running one, if th
 
 When you start the wallet on a testnet (e.g. different `--datadir`) you need to make sure to set the `--ipcpath` back to the original one.
 
-On OSX its `~/Library/Ethereum/geth.ipc` on linux `~/.ethereum/geth.ipc` and on windows it uses a named pipe, which doesn't need to be renamed.
+On OSX its `~/Library/Ethereum/ghbc.ipc` on linux `~/.ethereum/ghbc.ipc` and on windows it uses a named pipe, which doesn't need to be renamed.
 
 Example:
 
-    $ geth --datadir /my/chain/ --networkid 23 --ipcpath ~/Library/Ethereum/geth.ipc
+    $ ghbc --datadir /my/chain/ --networkid 23 --ipcpath ~/Library/Ethereum/ghbc.ipc
 
 
 
@@ -32,10 +32,10 @@ You need to make sure that the account displayed for the original wallet creatio
 
 The paths which store your wallets database and node are different:
 
-The wallet (Mist) stores its data at:
-- Mac: ~/Library/Application Support/Mist
-- Windows: %APPDATA%\Roaming\Mist
-- Linux: ~/.config/Mist
+The wallet (DHI) stores its data at:
+- Mac: ~/Library/Application Support/DHI
+- Windows: %APPDATA%\Roaming\DHI
+- Linux: ~/.config/DHI
 
 The nodes data is stored at:
 - Mac: ~/Library/Ethereum
@@ -46,21 +46,21 @@ The nodes data is stored at:
 ## Issues
 
 If you find issues or have suggestion, please report them at  
-https://github.com/ethereum/meteor-dapp-wallet/issues
+https://github.com/hotelbyte/meteor-dapp-wallet/issues
 
 
 
 ## Repository
 
 The wallet code can be found at   
-https://github.com/ethereum/meteor-dapp-wallet
+https://github.com/hotelbyte/meteor-dapp-wallet
 
 And the binary application code, which wraps the wallet app can be found at   
-https://github.com/ethereum/mist/tree/wallet
+https://github.com/hotelbyte/distributed-hotel-interface/tree/wallet
 
 
 
 ## Bundling the wallet
 
-To bundle the binaries yourself follow the instructions on the mist#wallet readme  
-https://github.com/ethereum/mist/tree/wallet#deployment
+To bundle the binaries yourself follow the instructions on the dhi#wallet readme  
+https://github.com/hotelbyte/distributed-hotel-interface/tree/wallet#deployment

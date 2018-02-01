@@ -27,7 +27,7 @@ Template['popupWindows_unlockMasterPassword'].onRendered(function () {
             });
 
             GlobalNotification.warning({
-                content: TAPi18n.__('mist.popupWindows.unlockMasterPassword.errors.wrongPassword'),
+                content: TAPi18n.__('dhi.popupWindows.unlockMasterPassword.errors.wrongPassword'),
                 duration: 3
             });
 
