@@ -6,10 +6,10 @@
                 "linux": {
                     "x64": {
                         "download": {
-                            "url": "https://hotelbyte-store.s3.amazonaws.com/ghbc-linux-amd64-1.7.2-1db4ecdc.tar.gz",
+                            "url": "https://hotelbyte-store.s3.amazonaws.com/ghbc-linux-amd64-1.8.0.tar.gz",
                             "type": "tar",
-                            "md5": "77ec79a5f0ae00fcc88552a7936b6f51",
-                            "bin": "ghbc-linux-amd64-1.7.2-1db4ecdc/ghbc"
+                            "md5": "b3aff19dfb3fb727f5871381b4d94892",
+                            "bin": "ghbc-linux-amd64-1.8.0/ghbc"
                         },
                         "bin": "ghbc",
                         "commands": {
@@ -19,7 +19,7 @@
                                 ],
                                 "output": [
                                     "Ghbc",
-                                    "1.7.2"
+                                    "1.8.0-unstable"
                                 ]
                             }
                         }
@@ -71,10 +71,10 @@
                     "x64": {
                         "download": {
 
-                            "url": "https://hotelbyte-store.s3.amazonaws.com/ghbc-windows-amd64-1.7.2-1db4ecdc.zip",
+                            "url": "https://hotelbyte-store.s3.amazonaws.com/ghbc-windows-amd64-1.8.0.zip",
                             "type": "zip",
-                            "md5": "4d524317d24f2fbc2c8c96ba16c5f7a5",
-                            "bin": "ghbc-windows-amd64-1.7.2-1db4ecdc\\ghbc.exe"
+                            "md5": "567eeda69a11ce3e0a6dd2641e5c51e5",
+                            "bin": "ghbc-windows-amd64-1.8.0\\ghbc.exe"
                         },
                         "bin": "ghbc.exe",
                         "commands": {
@@ -91,10 +91,10 @@
                     },
                     "ia32": {
                         "download": {
-                            "url": "https://hotelbyte-store.s3.amazonaws.com/ghbc-windows-386-1.7.2-1db4ecdc.zip",
+                            "url": "https://hotelbyte-store.s3.amazonaws.com/ghbc-windows-amd64-1.8.0.zip",
                             "type": "zip",
-                            "md5": "50b353bf3639a502b06e0098c751df67",
-                            "bin": "ghbc-windows-386-1.7.2-1db4ecdc\\ghbc.exe"
+                            "md5": "567eeda69a11ce3e0a6dd2641e5c51e5",
+                            "bin": "ghbc-windows-amd64-1.8.0\\ghbc.exe"
                         },
                         "bin": "ghbc.exe",
                         "commands": {
@@ -104,7 +104,7 @@
                                 ],
                                 "output": [
                                     "Ghbc",
-                                    "1.7.2"
+                                    "1.8.0-unstable"
                                 ]
                             }
                         }
